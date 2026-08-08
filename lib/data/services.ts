@@ -32,7 +32,7 @@ export const services: Service[] = [
     id: "business",
     name: "Business Website",
     tagline: "Full-featured site built to grow your business",
-    price: "Starting at $1,299",
+    price: "Starting at $800",
     highlighted: true,
     features: [
       "Up to 8 pages",
