@@ -36,10 +36,10 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "border-b accent-border bg-[#0d1117]/90 shadow-lg shadow-black/20 backdrop-blur-lg"
-          : "bg-transparent"
+          : "bg-[#0d1117]/70 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none"
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
         <Link href="/" className="group flex items-center gap-3">
           <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2 ring-red-500/30 transition-transform group-hover:scale-105">
             <Image
@@ -77,7 +77,7 @@ export default function Navbar() {
         <button
           type="button"
           aria-label="Toggle menu"
-          className="relative z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 md:hidden"
+          className="relative z-50 flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 bg-[#0d1117]/95 backdrop-blur-sm md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <span className="sr-only">Menu</span>

@@ -9,12 +9,13 @@ export const brand = {
     "VermilionTech crafts fast, modern web experiences — from business sites to custom digital products.",
   email: "foodlandrock@gmail.com",
   founder: "Kiont Jones",
+  github: "https://github.com/KIONT12/vermiliontech",
 };
 
 export const heroContent = {
-  badge: "Now accepting new projects",
+  badge: "Web development studio",
   title: "We Build Websites That Turn Visitors Into Customers",
   highlight: "Turn Visitors Into Customers",
   description:
-    "VermilionTech crafts fast, modern web experiences — from business sites to custom digital products.",
+    "Custom websites for businesses that need to look credible, load fast, and convert — built with Next.js and modern best practices.",
 };

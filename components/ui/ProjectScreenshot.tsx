@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import LazyLiveIframe from "@/components/ui/LazyLiveIframe";
+import { usePerformanceProfile } from "@/lib/hooks/usePerformanceProfile";
 
 interface ProjectScreenshotProps {
   title: string;
@@ -94,6 +95,7 @@ export default function ProjectScreenshot({
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const isLight = variant === "light";
+  const { prefersLightEffects } = usePerformanceProfile();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -159,6 +161,23 @@ export default function ProjectScreenshot({
   }
 
   if (livePreview && liveUrl) {
+    if (prefersLightEffects && previewImage) {
+      return (
+        <div
+          className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
+        >
+          <Image
+            src={previewImage}
+            alt={`${title} website preview`}
+            fill
+            className="object-cover object-top"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
+        </div>
+      );
+    }
+
     return (
       <div
         className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BrandName from "@/components/ui/BrandName";
+import { GitHubIcon } from "@/components/ui/Icons";
 import { brand } from "@/lib/data/brand";
 
 const footerLinks = {
@@ -44,6 +45,15 @@ export default function Footer() {
               className="mt-4 inline-block text-sm accent-text transition-colors hover:text-red-300"
             >
               {brand.email}
+            </a>
+            <a
+              href={brand.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-white"
+            >
+              <GitHubIcon className="h-4 w-4" />
+              GitHub
             </a>
           </div>
 

@@ -1,5 +1,4 @@
-import Hero from "@/components/home/Hero";
-import FeaturedProjects from "@/components/home/FeaturedProjects";
+import HomeMain from "@/components/home/HomeMain";
 import ServicesPreview from "@/components/home/ServicesPreview";
 import WhyWorkWithMe from "@/components/home/WhyWorkWithMe";
 import CTASection from "@/components/home/CTASection";
@@ -7,8 +6,7 @@ import CTASection from "@/components/home/CTASection";
 export default function Home() {
   return (
     <>
-      <Hero />
-      <FeaturedProjects />
+      <HomeMain />
       <ServicesPreview />
       <WhyWorkWithMe />
       <CTASection />

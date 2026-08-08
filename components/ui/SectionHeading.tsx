@@ -22,7 +22,7 @@ export default function SectionHeading({
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-3 inline-block text-sm font-semibold uppercase tracking-widest text-red-400"
+          className="mb-3 inline-block text-xs font-medium uppercase tracking-[0.14em] text-zinc-500"
         >
           {label}
         </motion.span>
@@ -32,7 +32,7 @@ export default function SectionHeading({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
-        className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+        className="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
       >
         {title}
       </motion.h2>

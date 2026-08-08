@@ -5,24 +5,24 @@ import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function WhyWorkWithMe() {
   return (
-    <section className="relative py-24 lg:py-32">
-      <div className="absolute inset-0 grid-bg opacity-50" />
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <section className="home-section-pro relative border-t border-white/[0.06] bg-[#0a0e14]/50 py-20 lg:py-28">
+      <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
         <SectionHeading
-          label="Why Work With Me"
-          title="Built for Results"
-          description="Every project is crafted with attention to detail, performance, and your business goals."
+          label="Why VermilionTech"
+          title="A partner, not just a developer"
+          description="Direct communication, thoughtful execution, and sites you can be proud to share."
+          centered={false}
         />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {whyWorkWithMe.map((item, i) => (
-            <ScrollReveal key={item.title} delay={i * 0.08}>
-              <div className="group rounded-xl border border-red-500/10 bg-[#111827]/80 p-6 text-center backdrop-blur-sm transition-all duration-300 hover:border-red-500/25 card-hover">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-red-500/20 to-red-500/10 text-red-400 transition-transform group-hover:scale-110">
-                  {getIcon(item.icon, "h-7 w-7")}
+            <ScrollReveal key={item.title} delay={i * 0.06}>
+              <div className="pro-card p-5 text-left">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10 text-red-400">
+                  {getIcon(item.icon, "h-5 w-5")}
                 </div>
-                <h3 className="font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                <h3 className="text-sm font-semibold text-white">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-500">
                   {item.description}
                 </p>
               </div>

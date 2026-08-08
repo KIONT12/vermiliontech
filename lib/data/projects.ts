@@ -59,6 +59,7 @@ export const projects: Project[] = [
     previewVariant: "dark",
     livePreview: true,
     previewMute: true,
+    previewImage: "/projects/gsoundz-home.png",
   },
   {
     id: "jd-mobile-detailing",
