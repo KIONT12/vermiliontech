@@ -15,7 +15,7 @@ export default function HomeVideoBackground() {
     if (!video || !allowHeroVideo) return;
 
     video.muted = true;
-    video.defaultMuted = true;
+    video.setAttribute("muted", "");
 
     const playPromise = video.play();
     if (playPromise) {
@@ -85,7 +85,6 @@ export default function HomeVideoBackground() {
           autoPlay
           loop
           muted
-          defaultMuted
           playsInline
           preload="auto"
           disablePictureInPicture
