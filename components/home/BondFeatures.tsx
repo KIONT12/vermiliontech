@@ -1,29 +1,18 @@
-import { getIcon } from "@/components/ui/Icons";
-
-const highlights = [
+const deliverables = [
   {
-    title: "Custom Development",
+    title: "Business Websites",
     description:
-      "Every project is built to your specifications — no templates, no shortcuts.",
-    icon: "palette",
+      "Professional sites with clear messaging, fast load times, and layouts designed to turn visitors into leads and customers.",
   },
   {
     title: "Web Applications",
     description:
-      "Scalable apps and platforms using modern frameworks and best practices.",
-    icon: "rocket",
+      "Custom dashboards, booking systems, client portals, and tools built around how your business actually operates.",
   },
   {
-    title: "Business Websites",
+    title: "Custom Software",
     description:
-      "Professional sites optimized for speed, search visibility, and lead generation.",
-    icon: "sparkles",
-  },
-  {
-    title: "Reliable Delivery",
-    description:
-      "Clear timelines, consistent communication, and production-ready code.",
-    icon: "device",
+      "One-of-a-kind digital products when off-the-shelf tools fall short — scoped, designed, and built to fit your workflow.",
   },
 ];
 
@@ -31,25 +20,42 @@ export default function BondFeatures() {
   return (
     <section className="pro-section border-t border-white/[0.06] bg-[#0d1117]">
       <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
-        <div className="pro-section-header max-w-2xl">
-          <p className="pro-label">Capabilities</p>
-          <h2 className="pro-section-title mt-3">What we deliver</h2>
-          <p className="pro-section-desc mt-3">
-            Full-service development for businesses that need a dependable partner —
-            not a one-size-fits-all solution.
-          </p>
-        </div>
+        <div className="pro-deliver-layout">
+          <div className="pro-deliver-intro">
+            <p className="pro-label">What I do</p>
+            <h2 className="pro-section-title mt-3">
+              I design and build the digital products your business runs on
+            </h2>
+            <div className="pro-deliver-copy mt-6 space-y-4 text-base leading-relaxed text-zinc-400">
+              <p>
+                I&apos;m a developer who builds <strong className="font-medium text-zinc-200">websites</strong>,{" "}
+                <strong className="font-medium text-zinc-200">web apps</strong>, and{" "}
+                <strong className="font-medium text-zinc-200">custom software</strong> for
+                businesses that need more than a template. Every project is tailored to your
+                brand, your customers, and the results you want — whether that&apos;s more
+                inquiries, online sales, or a smoother internal process.
+              </p>
+              <p>
+                You get direct communication, creative problem-solving, and clean code that
+                performs on every device. No hand-offs, no cookie-cutter solutions — just
+                focused work built to launch and last.
+              </p>
+            </div>
+          </div>
 
-        <div className="pro-capability-grid mt-12">
-          {highlights.map((item) => (
-            <article key={item.title} className="pro-capability-item">
-              <div className="pro-capability-icon text-red-500">
-                {getIcon(item.icon, "h-5 w-5")}
-              </div>
-              <h3 className="mt-4 text-base font-semibold text-white">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500">{item.description}</p>
-            </article>
-          ))}
+          <div className="pro-deliver-list">
+            {deliverables.map((item, index) => (
+              <article key={item.title} className="pro-deliver-row">
+                <span className="pro-deliver-index">{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="text-base font-semibold text-white">{item.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-zinc-500">
+                    {item.description}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
