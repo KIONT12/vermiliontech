@@ -19,17 +19,22 @@ export const conservativePerformanceProfile: PerformanceProfile = {
   isMobile: true,
   isTablet: false,
   isDesktop: false,
-  prefersLightEffects: true,
-  allowLivePreviews: false,
-  allowHeroVideo: false,
+  prefersLightEffects: false,
+  allowLivePreviews: true,
+  allowHeroVideo: true,
   allowBackgroundEffects: false,
-  allowPreviewVideos: false,
+  allowPreviewVideos: true,
 };
 
 function readConnection() {
   const connection = (
     navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string; addEventListener?: (type: string, cb: () => void) => void; removeEventListener?: (type: string, cb: () => void) => void };
+      connection?: {
+        saveData?: boolean;
+        effectiveType?: string;
+        addEventListener?: (type: string, cb: () => void) => void;
+        removeEventListener?: (type: string, cb: () => void) => void;
+      };
     }
   ).connection;
 
@@ -53,11 +58,9 @@ export function computePerformanceProfile(): PerformanceProfile {
   const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
   const { saveData, slowConnection } = readConnection();
 
-  const prefersLightEffects =
-    reducedMotion || saveData || slowConnection || isMobile || isTablet;
+  const prefersLightEffects = reducedMotion || saveData || slowConnection;
 
-  const allowHeavyMedia =
-    !reducedMotion && !saveData && !slowConnection;
+  const allowHeavyMedia = !reducedMotion && !saveData && !slowConnection;
 
   return {
     reducedMotion,
@@ -67,10 +70,10 @@ export function computePerformanceProfile(): PerformanceProfile {
     isTablet,
     isDesktop,
     prefersLightEffects,
-    allowLivePreviews: false,
-    allowHeroVideo: isDesktop && allowHeavyMedia,
+    allowLivePreviews: allowHeavyMedia,
+    allowHeroVideo: allowHeavyMedia,
     allowBackgroundEffects: !isMobile && !reducedMotion,
-    allowPreviewVideos: (isDesktop || isTablet) && allowHeavyMedia,
+    allowPreviewVideos: allowHeavyMedia,
   };
 }
 
@@ -99,4 +102,17 @@ export function subscribePerformanceProfile(onChange: () => void) {
     reducedMotion.removeEventListener("change", handler);
     connection?.removeEventListener?.("change", handler);
   };
+}
+
+export function livePreviewScale(
+  baseScale: number,
+  profile: Pick<PerformanceProfile, "isMobile" | "isTablet">,
+) {
+  if (profile.isMobile) {
+    return baseScale * 0.38;
+  }
+  if (profile.isTablet) {
+    return baseScale * 0.58;
+  }
+  return baseScale;
 }

@@ -48,7 +48,6 @@ export default function FeaturedProjects({
                   project={project}
                   showPortfolioLink={i === spotlightProjects.length - 1}
                   proStyle
-                  staticPreviewOnly
                 />
               </ScrollReveal>
             ))}

@@ -231,7 +231,8 @@ export default function ProjectScreenshot({
   } = usePerformanceProfile();
 
   const staticSrc = previewImage || previewPoster;
-  const videoPreload = isMobile ? "none" : prefersLightEffects ? "metadata" : "auto";
+  const videoPreload =
+    prefersLightEffects || isMobile ? "metadata" : "auto";
 
   if (livePreview && liveUrl) {
     if (!allowLivePreviews && staticSrc) {

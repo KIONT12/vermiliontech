@@ -8,6 +8,7 @@ import {
   unregisterLivePreview,
 } from "@/lib/livePreviewManager";
 import { usePerformanceProfile } from "@/lib/hooks/usePerformanceProfile";
+import { livePreviewScale } from "@/lib/performanceProfile";
 
 interface LazyLiveIframeProps {
   previewKey: string;
@@ -34,7 +35,10 @@ export default function LazyLiveIframe({
   const [isVisible, setIsVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
-  const { allowLivePreviews } = usePerformanceProfile();
+  const { allowLivePreviews, isMobile, isTablet } = usePerformanceProfile();
+  const effectiveScale = livePreviewScale(scale, { isMobile, isTablet });
+  const visibilityThreshold = isMobile ? 0.12 : 0.2;
+  const loadDelay = isMobile ? 80 : 180;
 
   useEffect(() => {
     if (!allowLivePreviews) return;
@@ -53,10 +57,13 @@ export default function LazyLiveIframe({
     const observer = new IntersectionObserver(
       ([entry]) => {
         const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
-        setIsVisible(entry.isIntersecting && ratio >= 0.2);
+        setIsVisible(entry.isIntersecting && ratio >= visibilityThreshold);
         reportLivePreviewVisibility(previewKey, ratio);
       },
-      { rootMargin: "48px 0px", threshold: [0, 0.2, 0.45, 0.7, 1] },
+      {
+        rootMargin: isMobile ? "80px 0px" : "48px 0px",
+        threshold: [0, visibilityThreshold, 0.45, 0.7, 1],
+      },
     );
 
     observer.observe(node);
@@ -64,7 +71,7 @@ export default function LazyLiveIframe({
       observer.disconnect();
       unregisterLivePreview(previewKey);
     };
-  }, [allowLivePreviews, previewKey]);
+  }, [allowLivePreviews, previewKey, visibilityThreshold, isMobile]);
 
   useEffect(() => {
     if (!isVisible || !isActive) {
@@ -74,10 +81,10 @@ export default function LazyLiveIframe({
 
     const timer = window.setTimeout(() => {
       setShouldLoad(true);
-    }, 180);
+    }, loadDelay);
 
     return () => window.clearTimeout(timer);
-  }, [isVisible, isActive]);
+  }, [isVisible, isActive, loadDelay]);
 
   if (!allowLivePreviews) {
     if (fallbackSrc) {
@@ -111,7 +118,7 @@ export default function LazyLiveIframe({
           allow={previewMute ? "autoplay 'none'; microphone 'none'" : undefined}
           className="pointer-events-none absolute left-1/2 top-0 border-0"
           style={{
-            transform: `translate3d(-50%, 0, 0) scale(${scale})`,
+            transform: `translate3d(-50%, 0, 0) scale(${effectiveScale})`,
             transformOrigin: "top center",
           }}
         />

@@ -74,7 +74,6 @@ export default function ProjectGrid() {
                 <PortfolioProjectCard
                   project={project}
                   reverse={i % 2 === 1}
-                  staticPreviewOnly
                 />
               </div>
             </ScrollReveal>

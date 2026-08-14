@@ -2629,6 +2629,11 @@ h4 {
     transform: none;
     filter: brightness(1.06) saturate(1.03);
   }
+
+  .home-video-bg--mobile .home-video-bg__pollo-cover {
+    width: min(240px, 50vw);
+    height: min(72px, 10vh);
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
