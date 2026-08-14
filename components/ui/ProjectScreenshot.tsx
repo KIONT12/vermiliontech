@@ -31,6 +31,20 @@ function buildEmbedUrl(liveUrl: string, muted: boolean) {
   return url.toString();
 }
 
+function startVideoPlayback(video: HTMLVideoElement) {
+  const play = () => {
+    video.play().catch(() => {});
+  };
+
+  if (video.readyState >= 2) {
+    play();
+    return;
+  }
+
+  video.addEventListener("loadeddata", play, { once: true });
+  video.addEventListener("canplay", play, { once: true });
+}
+
 function displayUrl(title: string, liveUrl?: string) {
   if (liveUrl) {
     try {
@@ -105,12 +119,12 @@ export default function ProjectScreenshot({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video.play().catch(() => {});
+          startVideoPlayback(video);
         } else {
           video.pause();
         }
       },
-      { threshold: 0.2, rootMargin: "40px" },
+      { threshold: 0.15, rootMargin: "80px" },
     );
 
     observer.observe(container);
@@ -130,8 +144,10 @@ export default function ProjectScreenshot({
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           className="absolute inset-0 h-full w-full object-cover object-top"
+          onLoadedData={(e) => startVideoPlayback(e.currentTarget)}
+          onCanPlay={(e) => startVideoPlayback(e.currentTarget)}
           onError={(e) => {
             const target = e.currentTarget;
             target.style.display = "none";
@@ -229,8 +245,10 @@ export default function ProjectScreenshot({
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           className="absolute inset-0 h-full w-full object-cover object-top"
+          onLoadedData={(e) => startVideoPlayback(e.currentTarget)}
+          onCanPlay={(e) => startVideoPlayback(e.currentTarget)}
         >
           <source
             src={previewVideo}

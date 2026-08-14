@@ -737,11 +737,6 @@ body {
   .home-tech-fire .tech-project-card:hover {
     transform: none;
   }
-
-  .home-tech-fire .tech-project-card {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 420px;
-  }
 }
 
 .home-section-pro {
