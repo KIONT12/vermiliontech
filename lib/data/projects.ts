@@ -108,7 +108,11 @@ export const projects: Project[] = [
     spotlight: true,
     gradient: "from-amber-950 via-orange-900 to-zinc-900",
     previewVariant: "dark",
-    previewImage: "/projects/jp-olive.png",
+    livePreview: true,
+    previewMute: true,
+    previewScale: 0.78,
+    previewViewportWidth: 1280,
+    previewViewportHeight: 720,
   },
 ];
 
