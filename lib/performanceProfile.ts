@@ -59,8 +59,6 @@ export function computePerformanceProfile(): PerformanceProfile {
 
   const prefersLightEffects = reducedMotion || saveData || slowConnection;
 
-  const allowMedia = !reducedMotion && !saveData;
-
   return {
     reducedMotion,
     saveData,
@@ -69,10 +67,10 @@ export function computePerformanceProfile(): PerformanceProfile {
     isTablet,
     isDesktop,
     prefersLightEffects,
-    allowLivePreviews: allowMedia,
-    allowHeroVideo: allowMedia,
+    allowLivePreviews: !reducedMotion,
+    allowHeroVideo: !reducedMotion,
     allowBackgroundEffects: !isMobile && !reducedMotion,
-    allowPreviewVideos: allowMedia,
+    allowPreviewVideos: !reducedMotion,
   };
 }
 

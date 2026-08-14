@@ -2624,10 +2624,12 @@ h4 {
 
 @media (max-width: 767px) {
   .home-video-bg__media {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center center;
     transform: none;
     filter: brightness(1.06) saturate(1.03);
+    min-height: 100%;
+    min-width: 100%;
   }
 
   .home-video-bg--mobile .home-video-bg__pollo-cover {
