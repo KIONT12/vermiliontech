@@ -10,6 +10,8 @@ interface LazyLiveIframeProps {
   height: number;
   scale: number;
   previewMute: boolean;
+  /** Load iframe on mobile when no static preview fallback exists. */
+  forceLive?: boolean;
 }
 
 export default function LazyLiveIframe({
@@ -19,13 +21,15 @@ export default function LazyLiveIframe({
   height,
   scale,
   previewMute,
+  forceLive = false,
 }: LazyLiveIframeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showIframe, setShowIframe] = useState(false);
   const { prefersLightEffects } = usePerformanceProfile();
+  const skipIframe = prefersLightEffects && !forceLive;
 
   useEffect(() => {
-    if (prefersLightEffects) return;
+    if (skipIframe) return;
 
     const node = containerRef.current;
     if (!node) return;
@@ -39,9 +43,9 @@ export default function LazyLiveIframe({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [prefersLightEffects]);
+  }, [skipIframe]);
 
-  if (prefersLightEffects) {
+  if (skipIframe) {
     return <div className="absolute inset-0 top-[3.25rem] bg-[#0f0f12]" aria-hidden />;
   }
 

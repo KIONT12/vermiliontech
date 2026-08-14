@@ -206,6 +206,7 @@ export default function ProjectScreenshot({
           height={previewViewportHeight}
           scale={previewScale}
           previewMute={previewMute}
+          forceLive={!previewImage && !previewPoster}
         />
         <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
       </div>

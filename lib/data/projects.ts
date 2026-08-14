@@ -41,9 +41,11 @@ export const projects: Project[] = [
     spotlight: true,
     gradient: "from-zinc-950 via-red-950 to-black",
     previewVariant: "dark",
-    previewImage: "/projects/new-force-basketball.png",
     livePreview: true,
     previewMute: true,
+    previewScale: 0.45,
+    previewViewportWidth: 390,
+    previewViewportHeight: 900,
   },
   {
     id: "white-bkk-new-location",
