@@ -2604,18 +2604,18 @@ h4 {
   inset: 0;
   height: 100%;
   width: 100%;
-  object-fit: cover;
-  object-position: 38% top;
-  filter: brightness(1.15) saturate(1.1);
-  transform: scale(1.14) translateZ(0);
-  transform-origin: 40% top;
+  object-fit: contain;
+  object-position: center center;
+  filter: brightness(1.08) saturate(1.05);
+  transform: none;
 }
 
 @media (max-width: 767px) {
   .home-video-bg__media {
-    object-position: center top;
-    transform: scale(1.08) translateZ(0);
-    filter: brightness(1.1) saturate(1.05);
+    object-fit: contain;
+    object-position: center center;
+    transform: none;
+    filter: brightness(1.06) saturate(1.03);
   }
 
   .home-video-bg__header-mask {
@@ -2626,8 +2626,9 @@ h4 {
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .home-video-bg__media {
-    object-position: 42% top;
-    transform: scale(1.1) translateZ(0);
+    object-fit: contain;
+    object-position: center center;
+    transform: none;
   }
 }
 
@@ -2637,10 +2638,10 @@ h4 {
   z-index: 1;
   background: linear-gradient(
     180deg,
-    rgba(4, 6, 10, 0.12) 0%,
-    rgba(4, 6, 10, 0.04) 42%,
-    rgba(4, 6, 10, 0.6) 88%,
-    rgba(4, 6, 10, 0.88) 100%
+    rgba(4, 6, 10, 0.08) 0%,
+    rgba(4, 6, 10, 0.02) 45%,
+    rgba(4, 6, 10, 0.45) 82%,
+    rgba(4, 6, 10, 0.78) 100%
   );
   pointer-events: none;
 }
