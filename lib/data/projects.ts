@@ -29,6 +29,23 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "new-force-basketball",
+    title: "New Force Basketball Club",
+    category: "Business Websites",
+    industry: "Sports & Basketball",
+    description:
+      "A FIBA basketball club site for New Force — with roster pages, 3x3 tournament info, athlete development messaging, and contact flows for tryouts, partnerships, and sponsorships.",
+    technologies: ["Next.js", "React", "Tailwind CSS", "Responsive Design"],
+    liveUrl: "https://print-off.vercel.app/",
+    featured: true,
+    spotlight: true,
+    gradient: "from-zinc-950 via-red-950 to-black",
+    previewVariant: "dark",
+    previewImage: "/projects/new-force-basketball.png",
+    livePreview: true,
+    previewMute: true,
+  },
+  {
     id: "white-bkk-new-location",
     title: "WhiteAsh BKK – New Location",
     category: "Landing Pages",
@@ -90,22 +107,6 @@ export const projects: Project[] = [
     gradient: "from-amber-950 via-orange-900 to-zinc-900",
     previewVariant: "dark",
     previewImage: "/projects/jp-olive.png",
-  },
-  {
-    id: "new-force-basketball",
-    title: "New Force Basketball Club",
-    category: "Business Websites",
-    industry: "Sports & Basketball",
-    description:
-      "A FIBA basketball club site for New Force — with roster pages, 3x3 tournament info, athlete development messaging, and contact flows for tryouts, partnerships, and sponsorships.",
-    technologies: ["Next.js", "React", "Tailwind CSS", "Responsive Design"],
-    liveUrl: "https://print-off.vercel.app/",
-    featured: true,
-    spotlight: true,
-    gradient: "from-zinc-950 via-red-950 to-black",
-    previewVariant: "dark",
-    livePreview: true,
-    previewMute: true,
   },
 ];
 
