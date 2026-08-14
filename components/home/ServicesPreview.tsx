@@ -11,7 +11,7 @@ export default function ServicesPreview() {
           <p className="pro-label">Services</p>
           <h2 className="pro-section-title mt-3">How we can help</h2>
           <p className="pro-section-desc mt-3">
-            Structured offerings for businesses at every stage — from a professional
+            Structured services for businesses at every stage—from a professional
             web presence to fully custom software development.
           </p>
         </div>

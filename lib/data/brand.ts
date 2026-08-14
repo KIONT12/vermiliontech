@@ -17,5 +17,5 @@ export const heroContent = {
   title: "Custom Websites, Apps & Software",
   subtitle: "Built to convert visitors into customers.",
   description:
-    "We deliver tailored digital products — from business websites to custom applications — with clean design, fast performance, and a focus on outcomes that matter to your business.",
+    "We deliver tailored digital products—from business websites to custom applications—with clean design, fast performance, and a focus on outcomes that matter to your business.",
 };
