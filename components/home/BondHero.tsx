@@ -5,6 +5,7 @@ import Link from "next/link";
 import BrandName from "@/components/ui/BrandName";
 import HomeBondAtmosphere from "@/components/home/HomeBondAtmosphere";
 import { heroContent } from "@/lib/data/brand";
+import { useMotionPreference } from "@/lib/hooks/useMotionPreference";
 
 function renderTitle() {
   const { title, highlight } = heroContent;
@@ -27,6 +28,16 @@ const stats = [
 ];
 
 export default function BondHero() {
+  const { effectsEnabled } = useMotionPreference();
+  const motionProps = (delay = 0) =>
+    effectsEnabled
+      ? {
+          initial: { opacity: 0, y: 24 } as const,
+          animate: { opacity: 1, y: 0 } as const,
+          transition: { duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] as const },
+        }
+      : {};
+
   return (
     <section className="tech-hero relative min-h-[94vh] overflow-hidden pt-24">
       <HomeBondAtmosphere />
@@ -35,9 +46,7 @@ export default function BondHero() {
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              {...motionProps()}
               className="tech-hero-frame"
             >
               <span className="tech-corner tech-corner--tl" aria-hidden />
@@ -68,9 +77,13 @@ export default function BondHero() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.65, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+              {...(effectsEnabled
+                ? {
+                    initial: { opacity: 0, x: 20 },
+                    animate: { opacity: 1, x: 0 },
+                    transition: { duration: 0.45, delay: 0.08, ease: [0.22, 1, 0.36, 1] },
+                  }
+                : {})}
               className="tech-hero-side hidden lg:block"
             >
               <BrandName size="lg" className="opacity-90" />
@@ -99,9 +112,7 @@ export default function BondHero() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.55 }}
+            {...motionProps(0.12)}
             className="tech-pill-row mt-10 lg:hidden"
           >
             {stats.map((stat) => (

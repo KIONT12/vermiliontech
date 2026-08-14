@@ -95,7 +95,7 @@ export default function ProjectScreenshot({
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const isLight = variant === "light";
-  const { prefersLightEffects } = usePerformanceProfile();
+  const { prefersLightEffects, allowLivePreviews } = usePerformanceProfile();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -160,7 +160,7 @@ export default function ProjectScreenshot({
     );
   }
 
-  if (previewMute && (previewImage || previewPoster)) {
+  if (previewMute && (previewImage || previewPoster) && !livePreview) {
     return (
       <div
         className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
@@ -178,13 +178,16 @@ export default function ProjectScreenshot({
   }
 
   if (livePreview && liveUrl) {
-    if (prefersLightEffects && previewImage) {
+    const useStaticPreview =
+      !allowLivePreviews || (prefersLightEffects && (previewImage || previewPoster));
+
+    if (useStaticPreview && (previewImage || previewPoster)) {
       return (
         <div
           className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
         >
           <Image
-            src={previewImage}
+            src={previewImage || previewPoster!}
             alt={`${title} website preview`}
             fill
             className="object-cover object-top"
@@ -200,13 +203,13 @@ export default function ProjectScreenshot({
         className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
       >
         <LazyLiveIframe
+          previewKey={liveUrl}
           src={buildEmbedUrl(liveUrl, previewMute)}
           title={`${title} live preview`}
           width={previewViewportWidth}
           height={previewViewportHeight}
           scale={previewScale}
           previewMute={previewMute}
-          forceLive={!previewImage && !previewPoster}
         />
         <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
       </div>

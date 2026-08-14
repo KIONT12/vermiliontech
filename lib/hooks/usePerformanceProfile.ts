@@ -7,6 +7,7 @@ export interface PerformanceProfile {
   saveData: boolean;
   isMobile: boolean;
   prefersLightEffects: boolean;
+  allowLivePreviews: boolean;
 }
 
 const defaultProfile: PerformanceProfile = {
@@ -14,6 +15,7 @@ const defaultProfile: PerformanceProfile = {
   saveData: false,
   isMobile: false,
   prefersLightEffects: false,
+  allowLivePreviews: true,
 };
 
 export function usePerformanceProfile(): PerformanceProfile {
@@ -27,13 +29,18 @@ export function usePerformanceProfile(): PerformanceProfile {
     ).connection;
     const saveData = Boolean(connection?.saveData);
     const slowConnection =
-      connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g";
+      connection?.effectiveType === "slow-2g" ||
+      connection?.effectiveType === "2g" ||
+      connection?.effectiveType === "3g";
+
+    const prefersLightEffects = reducedMotion || saveData || slowConnection || isMobile;
 
     setProfile({
       reducedMotion,
       saveData,
       isMobile,
-      prefersLightEffects: reducedMotion || saveData || slowConnection || isMobile,
+      prefersLightEffects,
+      allowLivePreviews: !isMobile && !saveData && !slowConnection && !reducedMotion,
     });
   }, []);
 

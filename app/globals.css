@@ -722,6 +722,26 @@ body {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
+
+  .home-tech-fire .tech-hero-frame::before,
+  .home-tech-fire .tech-pulse-dot,
+  .home-tech-fire .tech-deck-glow {
+    animation: none;
+  }
+
+  .home-tech-fire .tech-deck-glow {
+    filter: none;
+  }
+
+  .home-tech-fire .tech-bento-cell:hover,
+  .home-tech-fire .tech-project-card:hover {
+    transform: none;
+  }
+
+  .home-tech-fire .tech-project-card {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 420px;
+  }
 }
 
 .home-section-pro {

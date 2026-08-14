@@ -1,57 +1,92 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  reportLivePreviewVisibility,
+  subscribeLivePreview,
+  unregisterLivePreview,
+} from "@/lib/livePreviewManager";
 import { usePerformanceProfile } from "@/lib/hooks/usePerformanceProfile";
 
 interface LazyLiveIframeProps {
+  previewKey: string;
   src: string;
   title: string;
   width: number;
   height: number;
   scale: number;
   previewMute: boolean;
-  /** Load iframe on mobile when no static preview fallback exists. */
-  forceLive?: boolean;
 }
 
 export default function LazyLiveIframe({
+  previewKey,
   src,
   title,
   width,
   height,
   scale,
   previewMute,
-  forceLive = false,
 }: LazyLiveIframeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [showIframe, setShowIframe] = useState(false);
-  const { prefersLightEffects } = usePerformanceProfile();
-  const skipIframe = prefersLightEffects && !forceLive;
+  const [isVisible, setIsVisible] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const { allowLivePreviews } = usePerformanceProfile();
 
   useEffect(() => {
-    if (skipIframe) return;
+    if (!allowLivePreviews) return;
+
+    return subscribeLivePreview((active) => {
+      setIsActive(active === previewKey);
+    });
+  }, [allowLivePreviews, previewKey]);
+
+  useEffect(() => {
+    if (!allowLivePreviews) return;
 
     const node = containerRef.current;
     if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setShowIframe(entry.isIntersecting);
+        const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
+        setIsVisible(entry.isIntersecting && ratio >= 0.15);
+        reportLivePreviewVisibility(previewKey, ratio);
       },
-      { rootMargin: "80px", threshold: 0.05 },
+      { rootMargin: "0px", threshold: [0, 0.15, 0.35, 0.55, 0.75, 1] },
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
-  }, [skipIframe]);
+    return () => {
+      observer.disconnect();
+      unregisterLivePreview(previewKey);
+    };
+  }, [allowLivePreviews, previewKey]);
 
-  if (skipIframe) {
+  useEffect(() => {
+    if (!isVisible || !isActive) {
+      setShouldLoad(false);
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setShouldLoad(true);
+    }, 120);
+
+    return () => window.clearTimeout(timer);
+  }, [isVisible, isActive]);
+
+  if (!allowLivePreviews) {
     return <div className="absolute inset-0 top-[3.25rem] bg-[#0f0f12]" aria-hidden />;
   }
 
   return (
-    <div ref={containerRef} className="absolute inset-0 top-[3.25rem] overflow-hidden bg-[#0f0f12]">
-      {showIframe ? (
+    <div
+      ref={containerRef}
+      className="absolute inset-0 top-[3.25rem] overflow-hidden bg-[#0f0f12]"
+      style={{ contain: "strict" }}
+    >
+      {shouldLoad ? (
         <iframe
           src={src}
           title={title}
@@ -61,12 +96,13 @@ export default function LazyLiveIframe({
           allow={previewMute ? "autoplay 'none'; microphone 'none'" : undefined}
           className="pointer-events-none absolute left-1/2 top-0 border-0"
           style={{
-            transform: `translateX(-50%) scale(${scale})`,
+            transform: `translate3d(-50%, 0, 0) scale(${scale})`,
             transformOrigin: "top center",
+            willChange: "transform",
           }}
         />
       ) : (
-        <div className="absolute inset-0 bg-[#0f0f12]" />
+        <div className="absolute inset-0 bg-[#0f0f12]" aria-hidden />
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import type { Project } from "@/lib/data/projects";
 import Button from "@/components/ui/Button";
 import ProjectScreenshot from "@/components/ui/ProjectScreenshot";
 import { ExternalLinkIcon } from "@/components/ui/Icons";
+import { useMotionPreference } from "@/lib/hooks/useMotionPreference";
 
 interface SpotlightProjectCardProps {
   project: Project;
@@ -36,9 +37,11 @@ export default function SpotlightProjectCard({
           ? "hack-project-card bond-card relative rounded-none border border-red-500/35 bg-[#080c12]/95"
           : "rounded-2xl border border-red-500/25 bg-[#111827] ring-1 ring-red-500/10";
 
+  const { effectsEnabled, isDesktop } = useMotionPreference();
+
   return (
     <motion.article
-      whileHover={unifiedStyle ? { y: -4 } : { y: -6 }}
+      whileHover={effectsEnabled && isDesktop ? (unifiedStyle ? { y: -4 } : { y: -6 }) : undefined}
       transition={{ duration: 0.3 }}
       className={`group card-hover lg:grid lg:grid-cols-2 ${cardClass}`}
     >
