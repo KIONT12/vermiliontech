@@ -77,6 +77,7 @@ export default function HomeVideoBackground() {
       )}
       <div className="home-video-bg__overlay" aria-hidden />
       <div className="home-video-bg__header-mask" aria-hidden />
+      <div className="home-video-bg__watermark-mask" aria-hidden />
     </div>
   );
 }
