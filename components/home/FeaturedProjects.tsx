@@ -14,6 +14,7 @@ interface FeaturedProjectsProps {
   flyerTheme?: boolean;
   cinemaTheme?: boolean;
   unifiedTheme?: boolean;
+  proTheme?: boolean;
 }
 
 export default function FeaturedProjects({
@@ -21,11 +22,46 @@ export default function FeaturedProjects({
   flyerTheme = false,
   cinemaTheme = false,
   unifiedTheme = false,
+  proTheme = false,
 }: FeaturedProjectsProps) {
   const spotlightProjects = featuredProjects.filter((p) => p.spotlight);
   const otherFeatured = featuredProjects.filter((p) => !p.spotlight);
 
-  const isHomeThemed = bondTheme || flyerTheme || cinemaTheme || unifiedTheme;
+  const isHomeThemed = bondTheme || flyerTheme || cinemaTheme || unifiedTheme || proTheme;
+
+  if (proTheme) {
+    return (
+      <section className="pro-section border-t border-white/[0.06] bg-[#0a0d12]">
+        <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
+          <div className="pro-section-header max-w-2xl">
+            <p className="pro-label">Portfolio</p>
+            <h2 className="pro-section-title mt-3">Client work</h2>
+            <p className="pro-section-desc mt-3">
+              A selection of live websites and applications currently in production.
+            </p>
+          </div>
+
+          <div className="pro-project-list mt-12">
+            {spotlightProjects.map((project, i) => (
+              <ScrollReveal key={project.id} delay={i * 0.04}>
+                <SpotlightProjectCard
+                  project={project}
+                  showPortfolioLink={i === spotlightProjects.length - 1}
+                  proStyle
+                />
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <ScrollReveal className="mt-12 text-center">
+            <Link href="/portfolio" className="pro-btn pro-btn-secondary">
+              View full portfolio
+            </Link>
+          </ScrollReveal>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section

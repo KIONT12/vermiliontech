@@ -5,25 +5,24 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function CTASection() {
   return (
-    <section className="studio-page-section relative overflow-hidden py-20 lg:py-28">
-      <div className="studio-section-bg" aria-hidden />
-      <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
+    <section className="pro-section border-t border-white/[0.06] bg-[#0d1117]">
+      <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
         <ScrollReveal>
-          <div className="studio-cta text-center">
-            <span className="studio-kicker">Let&apos;s talk</span>
-            <h2 className="studio-section-title mx-auto mt-4 max-w-2xl">
-              Have an idea? <span className="studio-accent-text">Let&apos;s make it real.</span>
+          <div className="pro-cta">
+            <p className="pro-label">Get started</p>
+            <h2 className="pro-section-title mt-3 max-w-xl">
+              Ready to discuss your project?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-400">
-              Tell me what you&apos;re building — I&apos;ll reply with a clear plan,
-              timeline, and quote. No pressure, just an honest conversation.
+            <p className="pro-section-desc mt-4 max-w-lg">
+              Share your requirements and we&apos;ll respond with a clear scope,
+              timeline, and quote. No obligation.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href="/contact" className="studio-btn-primary">
-                Get a Free Quote
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Link href="/contact" className="pro-btn pro-btn-primary">
+                Contact us
               </Link>
-              <Link href="/portfolio" className="studio-btn-secondary">
-                Browse Portfolio
+              <Link href="/portfolio" className="pro-btn pro-btn-secondary">
+                View portfolio
               </Link>
             </div>
           </div>

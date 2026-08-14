@@ -8,7 +8,6 @@ export default function Hero() {
       fullHeight
       badge={heroContent.badge}
       title={heroContent.title}
-      highlight={heroContent.highlight}
       description={heroContent.description}
     >
       <div className="flex flex-col gap-4 sm:flex-row">

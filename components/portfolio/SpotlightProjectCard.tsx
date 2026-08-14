@@ -14,6 +14,7 @@ interface SpotlightProjectCardProps {
   bondStyle?: boolean;
   cinemaStyle?: boolean;
   unifiedStyle?: boolean;
+  proStyle?: boolean;
   flyerStyle?: boolean;
   flyerIndex?: number;
 }
@@ -24,10 +25,13 @@ export default function SpotlightProjectCard({
   bondStyle = false,
   cinemaStyle = false,
   unifiedStyle = false,
+  proStyle = false,
   flyerStyle = false,
   flyerIndex,
 }: SpotlightProjectCardProps) {
-  const cardClass = unifiedStyle
+  const cardClass = proStyle
+    ? "pro-project-card overflow-hidden"
+    : unifiedStyle
     ? "tech-project-card overflow-hidden"
     : cinemaStyle
       ? "cinema-glass cinema-card overflow-hidden rounded-2xl"
@@ -41,11 +45,17 @@ export default function SpotlightProjectCard({
 
   return (
     <motion.article
-      whileHover={effectsEnabled && isDesktop ? (unifiedStyle ? { y: -4 } : { y: -6 }) : undefined}
-      transition={{ duration: 0.3 }}
+      whileHover={
+        effectsEnabled && isDesktop && (proStyle || unifiedStyle)
+          ? { y: proStyle ? -2 : -4 }
+          : effectsEnabled && isDesktop
+            ? { y: -6 }
+            : undefined
+      }
+      transition={{ duration: 0.25 }}
       className={`group card-hover lg:grid lg:grid-cols-2 ${cardClass}`}
     >
-      {unifiedStyle && (
+      {unifiedStyle && !proStyle && (
         <>
           <span className="tech-corner tech-corner--tl scale-75" aria-hidden />
           <span className="tech-corner tech-corner--tr scale-75" aria-hidden />
@@ -86,7 +96,9 @@ export default function SpotlightProjectCard({
           previewViewportHeight={project.previewViewportHeight}
           variant={project.previewVariant}
           className={
-            unifiedStyle
+            proStyle
+              ? "rounded-none lg:rounded-l-lg"
+              : unifiedStyle
               ? "rounded-none lg:rounded-l-xl"
               : cinemaStyle
                 ? "rounded-none lg:rounded-l-2xl"
@@ -100,7 +112,9 @@ export default function SpotlightProjectCard({
         )}
         <span
           className={`absolute right-4 top-4 z-10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-sm ${
-            unifiedStyle || cinemaStyle
+            proStyle
+              ? "pro-live-badge"
+              : unifiedStyle || cinemaStyle
               ? "cinema-live-badge"
               : flyerStyle
                 ? "flyer-stamp-sm -rotate-3"
@@ -109,23 +123,31 @@ export default function SpotlightProjectCard({
                   : "rounded-full border border-red-500/30 bg-[#0d1117]/80 text-red-300"
           }`}
         >
-          {unifiedStyle || cinemaStyle ? "Live" : flyerStyle ? "Live Site" : bondStyle ? "● Deployed" : "Live Project"}
+          {proStyle || unifiedStyle || cinemaStyle ? "Live" : flyerStyle ? "Live Site" : bondStyle ? "● Deployed" : "Live Project"}
         </span>
       </div>
-      <div className={`relative flex flex-col justify-center ${unifiedStyle ? "p-6 lg:p-8" : "p-8 lg:p-10"}`}>
+      <div
+        className={`relative flex flex-col justify-center ${
+          proStyle ? "p-6 lg:p-8" : unifiedStyle ? "p-6 lg:p-8" : "p-8 lg:p-10"
+        }`}
+      >
         {bondStyle && !cinemaStyle && !unifiedStyle && <div className="bond-data-stream mb-4" aria-hidden />}
         <span
-          className={`text-xs font-medium uppercase tracking-wider text-red-400 ${
-            bondStyle && !cinemaStyle && !unifiedStyle ? "font-mono text-[10px] font-bold tracking-[0.2em]" : ""
-          }`}
+          className={`text-xs font-medium uppercase tracking-wider ${
+            proStyle ? "text-zinc-500" : "text-red-400"
+          } ${bondStyle && !cinemaStyle && !unifiedStyle && !proStyle ? "font-mono text-[10px] font-bold tracking-[0.2em]" : ""}`}
         >
-          {unifiedStyle || cinemaStyle
+          {proStyle || unifiedStyle || cinemaStyle
             ? `${project.category} · ${project.industry}`
             : bondStyle
               ? `${project.category} // ${project.industry}`
               : project.category}
         </span>
-        <h3 className={`font-bold text-white transition-colors group-hover:text-red-300 ${unifiedStyle ? "mt-2 text-xl sm:text-2xl" : "mt-3 text-2xl sm:text-3xl"}`}>
+        <h3
+          className={`font-semibold text-white transition-colors group-hover:text-red-300 ${
+            proStyle ? "mt-2 text-xl sm:text-2xl" : unifiedStyle ? "mt-2 text-xl sm:text-2xl" : "mt-3 text-2xl sm:text-3xl"
+          }`}
+        >
           {project.title}
         </h3>
         <p className={`leading-relaxed text-zinc-400 ${unifiedStyle ? "mt-3 text-sm" : "mt-4 text-sm sm:text-base"}`}>
@@ -146,7 +168,9 @@ export default function SpotlightProjectCard({
             <span
               key={tech}
               className={`px-2.5 py-1 text-xs text-zinc-300 ${
-                unifiedStyle || cinemaStyle
+                proStyle
+                  ? "rounded bg-zinc-800/80 text-zinc-400"
+                  : unifiedStyle || cinemaStyle
                   ? "rounded-full bg-white/5 text-zinc-400"
                   : flyerStyle
                     ? "border border-red-500/25 bg-red-500/5 font-semibold uppercase tracking-wide"
@@ -160,7 +184,24 @@ export default function SpotlightProjectCard({
           ))}
         </div>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          {unifiedStyle || cinemaStyle ? (
+          {proStyle ? (
+            <>
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pro-btn pro-btn-primary text-sm"
+              >
+                Visit live site
+                <ExternalLinkIcon />
+              </a>
+              {showPortfolioLink && (
+                <Link href="/portfolio" className="pro-btn pro-btn-secondary text-sm">
+                  View all work
+                </Link>
+              )}
+            </>
+          ) : unifiedStyle || cinemaStyle ? (
             <>
               <a
                 href={project.liveUrl}

@@ -4,29 +4,26 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function WhyWorkWithMe() {
   return (
-    <section className="studio-page-section relative overflow-hidden border-t border-white/5 py-20 lg:py-28">
-      <div className="studio-section-bg studio-section-bg--alt" aria-hidden />
-      <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
-        <div className="studio-section-head mb-12">
-          <span className="studio-kicker">Why work with me</span>
-          <h2 className="studio-section-title">
-            One partner. <span className="studio-accent-text">Full creative control.</span>
-          </h2>
-          <p className="studio-section-desc mt-3 max-w-2xl">
-            You work directly with the person designing and building your product —
-            no hand-offs, no generic solutions, just focused work that ships.
+    <section className="pro-section border-t border-white/[0.06] bg-[#0a0d12]">
+      <div className="mx-auto max-w-6xl px-6 py-16 lg:px-8 lg:py-20">
+        <div className="pro-section-header max-w-2xl">
+          <p className="pro-label">Why VermilionTech</p>
+          <h2 className="pro-section-title mt-3">A partner you can rely on</h2>
+          <p className="pro-section-desc mt-3">
+            Direct communication, transparent process, and work that meets professional
+            standards from first draft to final deployment.
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {whyWorkWithMe.map((item, i) => (
-            <ScrollReveal key={item.title} delay={i * 0.05}>
-              <div className="studio-mini-card h-full">
-                <div className="studio-feature-icon mb-3 text-red-400">
+            <ScrollReveal key={item.title} delay={i * 0.04}>
+              <div className="pro-service-card h-full">
+                <div className="pro-capability-icon text-red-500">
                   {getIcon(item.icon, "h-5 w-5")}
                 </div>
-                <h3 className="text-sm font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                <h3 className="mt-4 text-sm font-semibold text-white">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-500">
                   {item.description}
                 </p>
               </div>
