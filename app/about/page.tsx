@@ -4,7 +4,7 @@ import AboutContent from "@/components/about/AboutContent";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Kiont Jones — professional athlete turned web developer building modern websites that drive business results.",
+    "Meet Kiont Jones, founder of VermilionTech—building custom websites, web apps, and software for businesses that need professional results.",
 };
 
 export default function AboutPage() {

@@ -1,12 +1,30 @@
 import { brand } from "./brand";
 
-export const skills = [
-  { name: "Frontend Development", level: 95 },
-  { name: "UI/UX Design", level: 85 },
-  { name: "Responsive Design", level: 98 },
-  { name: "SEO Optimization", level: 88 },
-  { name: "Performance Tuning", level: 90 },
-  { name: "Problem Solving", level: 95 },
+export const valueProps = [
+  {
+    title: "Built around your business",
+    description:
+      "Every website, app, and software project starts with your goals—not a pre-made template. You get something tailored to your brand and customers.",
+    icon: "palette",
+  },
+  {
+    title: "Fast, reliable, and scalable",
+    description:
+      "Modern frameworks, clean code, and performance-first builds that load quickly on every device and are ready to grow with you.",
+    icon: "rocket",
+  },
+  {
+    title: "Apps and software, not just sites",
+    description:
+      "Booking tools, client portals, dashboards, and custom platforms when your business needs more than a brochure website.",
+    icon: "device",
+  },
+  {
+    title: "Direct communication",
+    description:
+      "You work with the person designing and building your product—clear updates, honest timelines, and no runaround.",
+    icon: "sparkles",
+  },
 ];
 
 export const techStack = [
@@ -24,38 +42,40 @@ export const techStack = [
   "Sanity CMS",
 ];
 
-export const timeline = [
+export const milestones = [
   {
-    year: "2024",
-    title: "VermilionTech Launch",
+    year: "2021",
+    title: "Professional athletics",
     description:
-      "Launched VermilionTech, delivering modern websites for local businesses and startups.",
-  },
-  {
-    year: "2023",
-    title: "First Client Projects",
-    description:
-      "Built portfolio of business websites and landing pages for fitness, real estate, and food industries.",
+      "Competed at a professional level—building discipline, focus, and the drive to perform when it matters.",
   },
   {
     year: "2022",
-    title: "Web Development Journey",
+    title: "Development training",
     description:
-      "Started learning modern web development with React, Next.js, and TypeScript.",
+      "Committed to modern web development with React, Next.js, and TypeScript.",
   },
   {
-    year: "2021",
-    title: "Professional Athlete",
+    year: "2023–24",
+    title: "Client work begins",
     description:
-      "Competed at a professional level while developing a passion for technology and digital solutions.",
+      "Delivered business websites and landing pages across fitness, retail, music, and sports.",
+  },
+  {
+    year: "Today",
+    title: "VermilionTech",
+    description:
+      "A focused studio building custom websites, web apps, and software for businesses that need real results.",
   },
 ];
 
 export const aboutContent = {
-  headline: "A digital studio built on discipline, design, and results.",
+  headline:
+    "A development studio focused on custom websites, apps, and software that help businesses grow.",
+  founderName: brand.founder,
   paragraphs: [
-    `VermilionTech was founded by ${brand.founder} — a web developer and digital solutions creator with a unique background as a professional athlete. That competitive drive shapes every project we take on: disciplined execution, sharp focus, and a commitment to excellence.`,
-    "We specialize in building modern, high-performance websites that help businesses grow. From sleek landing pages to full-featured business sites, we create digital experiences that look great and deliver measurable results.",
-    "Our passion for technology and problem-solving fuels everything we do. We don't just build websites — we build solutions that help clients stand out, connect with their audience, and achieve their goals.",
+    `${brand.founder} founded VermilionTech after a career as a professional athlete. Years of training, competition, and accountability taught him how to prepare thoroughly, execute under pressure, and finish what he starts—qualities he brings to every client project today.`,
+    `He builds websites, web applications, and custom software for businesses that need more than a generic online presence. From conversion-focused business sites to tools that streamline daily operations, each project is shaped around the client's brand, audience, and goals.`,
+    `Clients work directly with Kiont from the first conversation through launch. That means straightforward communication, creative problem-solving, and work that is built to look professional, perform well, and last.`,
   ],
 };
