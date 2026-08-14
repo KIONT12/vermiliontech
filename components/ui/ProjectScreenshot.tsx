@@ -160,6 +160,23 @@ export default function ProjectScreenshot({
     );
   }
 
+  if (previewMute && (previewImage || previewPoster)) {
+    return (
+      <div
+        className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
+      >
+        <Image
+          src={previewImage || previewPoster!}
+          alt={`${title} website preview`}
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
+      </div>
+    );
+  }
+
   if (livePreview && liveUrl) {
     if (prefersLightEffects && previewImage) {
       return (
@@ -189,23 +206,6 @@ export default function ProjectScreenshot({
           height={previewViewportHeight}
           scale={previewScale}
           previewMute={previewMute}
-        />
-        <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
-      </div>
-    );
-  }
-
-  if (previewMute && (previewImage || previewPoster)) {
-    return (
-      <div
-        className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
-      >
-        <Image
-          src={previewImage || previewPoster!}
-          alt={`${title} website preview`}
-          fill
-          className="object-cover object-top"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
       </div>
