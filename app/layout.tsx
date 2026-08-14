@@ -1,23 +1,31 @@
-import type { Metadata } from "next";
-import { IBM_Plex_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { JetBrains_Mono, Sora } from "next/font/google";
 import ThemeBackground from "@/components/layout/ThemeBackground";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import { brand } from "@/lib/data/brand";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-ibm-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   weight: ["400", "500"],
   subsets: ["latin"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0d1117",
+};
 
 export const metadata: Metadata = {
   title: {
@@ -51,7 +59,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plusJakarta.variable} ${ibmPlexMono.variable} h-full scroll-smooth`}
+      className={`${sora.variable} ${jetbrainsMono.variable} h-full scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-[#0d1117] text-zinc-100 antialiased">
         <ThemeBackground />

@@ -32,7 +32,7 @@ export default function SectionHeading({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
-        className="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+        className="text-[clamp(1.625rem,5vw,2.25rem)] font-semibold tracking-tight text-white"
       >
         {title}
       </motion.h2>
@@ -42,7 +42,7 @@ export default function SectionHeading({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className={`mt-4 text-lg text-zinc-400 ${centered ? "mx-auto max-w-2xl" : "max-w-2xl"}`}
+          className={`mt-3 text-base leading-relaxed text-zinc-400 sm:mt-4 sm:text-lg ${centered ? "mx-auto max-w-2xl" : "max-w-2xl"}`}
         >
           {description}
         </motion.p>

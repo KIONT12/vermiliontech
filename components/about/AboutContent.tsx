@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { aboutContent, milestones, techStack, valueProps } from "@/lib/data/about";
+import { aboutContent, milestones, valueProps, workProcess } from "@/lib/data/about";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import OpeningSection from "@/components/ui/OpeningSection";
@@ -87,23 +87,26 @@ export default function AboutContent() {
       <section className="py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <SectionHeading
-            label="Tech stack"
-            title="Technologies we use"
-            description="Modern, proven tools for fast and maintainable builds."
+            label="Our process"
+            title="How we work together"
+            description="A straightforward path from first conversation to launch—no mystery, no endless back-and-forth."
           />
 
-          <ScrollReveal>
-            <div className="flex flex-wrap justify-center gap-3">
-              {techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-lg border border-red-500/20 bg-[#111827] px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:border-red-500/40 hover:text-red-300"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </ScrollReveal>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {workProcess.map((item, i) => (
+              <ScrollReveal key={item.step} delay={i * 0.08}>
+                <article className="relative h-full rounded-xl border border-red-500/10 bg-[#111827] p-6">
+                  <span className="font-mono text-xs font-medium uppercase tracking-wider text-red-400">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-3 text-base font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                    {item.description}
+                  </p>
+                </article>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </section>
 

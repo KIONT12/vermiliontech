@@ -27,19 +27,31 @@ export const valueProps = [
   },
 ];
 
-export const techStack = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Tailwind CSS",
-  "Framer Motion",
-  "Node.js",
-  "PostgreSQL",
-  "Vercel",
-  "Git",
-  "Figma",
-  "Stripe",
-  "Sanity CMS",
+export const workProcess = [
+  {
+    step: "01",
+    title: "Discover",
+    description:
+      "We start with your business, goals, audience, and what a win looks like—before anything gets designed or built.",
+  },
+  {
+    step: "02",
+    title: "Plan & design",
+    description:
+      "You get a clear site structure, visual direction, and user flow aligned to your brand and built to convert.",
+  },
+  {
+    step: "03",
+    title: "Build",
+    description:
+      "Development happens in focused phases with regular check-ins so you can see progress and give feedback along the way.",
+  },
+  {
+    step: "04",
+    title: "Launch & handoff",
+    description:
+      "We deploy, test across devices, and deliver a product ready to perform—with guidance if you need ongoing support.",
+  },
 ];
 
 export const milestones = [

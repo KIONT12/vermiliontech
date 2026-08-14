@@ -17,6 +17,10 @@ interface SpotlightProjectCardProps {
   proStyle?: boolean;
   flyerStyle?: boolean;
   flyerIndex?: number;
+  /** Flip preview/content on large screens (portfolio alternating rows). */
+  reverse?: boolean;
+  /** 1-based index shown on pro portfolio cards. */
+  projectIndex?: number;
 }
 
 export default function SpotlightProjectCard({
@@ -28,6 +32,8 @@ export default function SpotlightProjectCard({
   proStyle = false,
   flyerStyle = false,
   flyerIndex,
+  reverse = false,
+  projectIndex,
 }: SpotlightProjectCardProps) {
   const cardClass = proStyle
     ? "pro-project-card overflow-hidden"
@@ -42,6 +48,18 @@ export default function SpotlightProjectCard({
           : "rounded-2xl border border-red-500/25 bg-[#111827] ring-1 ring-red-500/10";
 
   const { effectsEnabled, isDesktop } = useMotionPreference();
+
+  const previewRoundedClass = proStyle
+    ? reverse
+      ? "rounded-none lg:rounded-r-lg"
+      : "rounded-none lg:rounded-l-lg"
+    : unifiedStyle
+      ? "rounded-none lg:rounded-l-xl"
+      : cinemaStyle
+        ? "rounded-none lg:rounded-l-2xl"
+        : flyerStyle || bondStyle
+          ? "rounded-none"
+          : "rounded-none lg:rounded-l-2xl lg:rounded-tr-none";
 
   return (
     <motion.article
@@ -71,7 +89,7 @@ export default function SpotlightProjectCard({
         </>
       )}
 
-      <div className="relative">
+      <div className={`relative ${reverse ? "lg:order-2" : ""}`}>
         {flyerStyle && flyerIndex != null && (
           <span className="flyer-number absolute left-0 top-0 z-10 px-4 py-3 font-black leading-none text-red-500/25">
             {String(flyerIndex).padStart(2, "0")}
@@ -95,17 +113,7 @@ export default function SpotlightProjectCard({
           previewViewportWidth={project.previewViewportWidth}
           previewViewportHeight={project.previewViewportHeight}
           variant={project.previewVariant}
-          className={
-            proStyle
-              ? "rounded-none lg:rounded-l-lg"
-              : unifiedStyle
-              ? "rounded-none lg:rounded-l-xl"
-              : cinemaStyle
-                ? "rounded-none lg:rounded-l-2xl"
-                : flyerStyle || bondStyle
-                  ? "rounded-none"
-                  : "rounded-none lg:rounded-l-2xl lg:rounded-tr-none"
-          }
+          className={previewRoundedClass}
         />
         {bondStyle && !cinemaStyle && !unifiedStyle && (
           <div className="hack-target-scan absolute inset-0 z-[5]" aria-hidden />
@@ -128,9 +136,16 @@ export default function SpotlightProjectCard({
       </div>
       <div
         className={`relative flex flex-col justify-center ${
+          reverse ? "lg:order-1" : ""
+        } ${
           proStyle ? "p-6 lg:p-8" : unifiedStyle ? "p-6 lg:p-8" : "p-8 lg:p-10"
         }`}
       >
+        {proStyle && projectIndex != null && (
+          <span className="portfolio-index" aria-hidden>
+            {String(projectIndex).padStart(2, "0")}
+          </span>
+        )}
         {bondStyle && !cinemaStyle && !unifiedStyle && <div className="bond-data-stream mb-4" aria-hidden />}
         <span
           className={`text-xs font-medium uppercase tracking-wider ${

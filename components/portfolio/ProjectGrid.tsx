@@ -1,21 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   projects,
   projectCategories,
   sortProjects,
   type ProjectCategory,
 } from "@/lib/data/projects";
-import ProjectCard from "@/components/portfolio/ProjectCard";
+import PortfolioProjectCard from "@/components/portfolio/PortfolioProjectCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import SectionHeading from "@/components/ui/SectionHeading";
+import { useMotionPreference } from "@/lib/hooks/useMotionPreference";
 
 export default function ProjectGrid() {
   const [activeFilter, setActiveFilter] = useState<ProjectCategory | "All">(
     "All",
   );
+  const { effectsEnabled } = useMotionPreference();
 
   const filtered = sortProjects(
     activeFilter === "All"
@@ -26,48 +28,77 @@ export default function ProjectGrid() {
   const filters: (ProjectCategory | "All")[] = ["All", ...projectCategories];
 
   return (
-    <section className="py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <SectionHeading
-          label="Portfolio"
-          title="Project Showcase"
-          description="Live client websites — including New Force Basketball, WhiteAsh BKK, GSoundz, JD Mobile Detailing, and J. Parker Sports Agency."
-        />
-
+    <section className="portfolio-section">
+      <div className="portfolio-inner">
         <ScrollReveal>
-          <div className="mb-12 flex flex-wrap justify-center gap-3">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => setActiveFilter(filter)}
-                className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
-                  activeFilter === filter
-                    ? "bg-gradient-to-r from-red-600 to-red-500 text-white shadow-lg shadow-red-500/25"
-                    : "border border-zinc-700 bg-zinc-800/50 text-zinc-400 hover:border-red-500/30 hover:text-red-300"
-                }`}
+          <div className="portfolio-toolbar">
+            <div className="portfolio-filters-wrap">
+              <div
+                className="portfolio-filters"
+                role="tablist"
+                aria-label="Filter projects by category"
               >
-                {filter}
-              </button>
-            ))}
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeFilter === filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`portfolio-filter-btn${
+                      activeFilter === filter ? " is-active" : ""
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <p className="portfolio-count">
+              {filtered.length}{" "}
+              {filtered.length === 1 ? "project" : "projects"}
+            </p>
           </div>
         </ScrollReveal>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((project) => (
-              <div key={project.id} id={project.id}>
-                <ProjectCard project={project} />
+        <motion.div
+          key={activeFilter}
+          initial={effectsEnabled ? { opacity: 0, y: 8 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="portfolio-project-list"
+        >
+          {filtered.map((project, i) => (
+            <ScrollReveal key={project.id} delay={effectsEnabled ? i * 0.05 : 0}>
+              <div id={project.id}>
+                <PortfolioProjectCard
+                  project={project}
+                  reverse={i % 2 === 1}
+                />
               </div>
-            ))}
-          </AnimatePresence>
-        </div>
+            </ScrollReveal>
+          ))}
+        </motion.div>
 
         {filtered.length === 0 && (
-          <p className="text-center text-zinc-500">
-            No projects found in this category.
-          </p>
+          <p className="portfolio-empty">No projects in this category yet.</p>
         )}
+
+        <ScrollReveal className="portfolio-cta-wrap">
+          <div className="portfolio-cta">
+            <p className="pro-label">Next project</p>
+            <h2 className="pro-section-title mt-3">
+              Ready to build something for your business?
+            </h2>
+            <p className="pro-section-desc mx-auto mt-3 max-w-lg">
+              Share your goals and we&apos;ll outline a clear plan — timeline,
+              scope, and what success looks like for you.
+            </p>
+            <Link href="/contact" className="portfolio-cta-btn">
+              Start a project
+            </Link>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

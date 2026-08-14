@@ -18,12 +18,12 @@ export default function BondHero() {
       : {};
 
   return (
-    <section className="pro-hero relative min-h-[90vh] overflow-hidden pt-24">
+    <section className="pro-hero relative min-h-[85svh] overflow-hidden pt-20 sm:min-h-[90vh] sm:pt-24">
       <HomeBondAtmosphere />
       <div className="pro-hero-scrim" aria-hidden />
       <div className="pro-hero-watermark-cover" aria-hidden />
 
-      <div className="relative z-[1] mx-auto flex min-h-[calc(90vh-6rem)] max-w-6xl flex-col justify-end px-6 pb-16 lg:justify-center lg:px-8 lg:pb-0">
+      <div className="relative z-[1] mx-auto flex min-h-[calc(85svh-5rem)] max-w-6xl flex-col justify-end px-4 pb-12 sm:min-h-[calc(90vh-6rem)] sm:px-6 sm:pb-16 lg:justify-center lg:px-8 lg:pb-0">
         <motion.div {...fade()} className="max-w-2xl">
           <p className="pro-label">{heroContent.badge}</p>
           <h1 className="pro-hero-title mt-4 text-white">{heroContent.title}</h1>

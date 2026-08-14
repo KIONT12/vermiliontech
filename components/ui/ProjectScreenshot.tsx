@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import LazyLiveIframe from "@/components/ui/LazyLiveIframe";
+import { useMotionPreference } from "@/lib/hooks/useMotionPreference";
 import { usePerformanceProfile } from "@/lib/hooks/usePerformanceProfile";
 
 interface ProjectScreenshotProps {
@@ -72,21 +73,135 @@ function BrowserChrome({
     : "bg-black/20 text-white/60";
 
   return (
-    <div className="absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/30 to-transparent p-4">
+    <div className="project-browser-chrome absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/30 to-transparent p-2.5 sm:p-4">
       <div
-        className={`flex items-center gap-1.5 rounded-lg px-3 py-2 backdrop-blur-sm ${chromeClass}`}
+        className={`flex items-center gap-1 sm:gap-1.5 rounded-md sm:rounded-lg px-2 py-1.5 sm:px-3 sm:py-2 backdrop-blur-sm ${chromeClass}`}
       >
-        <span className="h-2 w-2 rounded-full bg-red-400/80" />
-        <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
-        <span className="h-2 w-2 rounded-full bg-green-400/80" />
+        <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-red-400/80" />
+        <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-yellow-400/80" />
+        <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-green-400/80" />
         <div
-          className={`ml-3 flex-1 truncate rounded px-3 py-0.5 text-[10px] ${
+          className={`ml-2 sm:ml-3 flex-1 truncate rounded px-2 py-0.5 text-[9px] sm:text-[10px] ${
             isLight ? "bg-zinc-100 text-zinc-500" : "bg-white/10 text-white/80"
           }`}
         >
           {displayUrl(title, liveUrl)}
         </div>
       </div>
+    </div>
+  );
+}
+
+function StaticPreview({
+  title,
+  liveUrl,
+  isLight,
+  className,
+  src,
+}: {
+  title: string;
+  liveUrl?: string;
+  isLight: boolean;
+  className: string;
+  src: string;
+}) {
+  return (
+    <div
+      className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
+    >
+      <Image
+        src={src}
+        alt={`${title} website preview`}
+        fill
+        className="object-cover object-top"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      />
+      <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
+    </div>
+  );
+}
+
+function VideoPreview({
+  title,
+  liveUrl,
+  isLight,
+  className,
+  previewVideo,
+  previewPoster,
+  allowPlayback,
+  preload,
+}: {
+  title: string;
+  liveUrl?: string;
+  isLight: boolean;
+  className: string;
+  previewVideo: string;
+  previewPoster?: string;
+  allowPlayback: boolean;
+  preload: "none" | "metadata" | "auto";
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!allowPlayback) return;
+
+    const video = videoRef.current;
+    const container = videoContainerRef.current;
+    if (!video || !container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startVideoPlayback(video);
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.15, rootMargin: "80px" },
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [allowPlayback, previewVideo]);
+
+  if (!allowPlayback && previewPoster) {
+    return (
+      <StaticPreview
+        title={title}
+        liveUrl={liveUrl}
+        isLight={isLight}
+        className={className}
+        src={previewPoster}
+      />
+    );
+  }
+
+  return (
+    <div
+      ref={videoContainerRef}
+      className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-black ${className}`}
+    >
+      <video
+        ref={videoRef}
+        poster={previewPoster}
+        autoPlay={allowPlayback}
+        loop={allowPlayback}
+        muted
+        playsInline
+        preload={preload}
+        className="absolute inset-0 h-full w-full object-cover object-top"
+        onLoadedData={(e) => allowPlayback && startVideoPlayback(e.currentTarget)}
+        onCanPlay={(e) => allowPlayback && startVideoPlayback(e.currentTarget)}
+      >
+        <source
+          src={previewVideo}
+          type={
+            previewVideo.endsWith(".mov") ? "video/quicktime" : "video/mp4"
+          }
+        />
+      </video>
+      <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
     </div>
   );
 }
@@ -106,179 +221,76 @@ export default function ProjectScreenshot({
   variant = "dark",
   className = "",
 }: ProjectScreenshotProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
   const isLight = variant === "light";
-  const { prefersLightEffects, allowLivePreviews } = usePerformanceProfile();
+  const { effectsEnabled } = useMotionPreference();
+  const {
+    prefersLightEffects,
+    allowLivePreviews,
+    allowPreviewVideos,
+    isMobile,
+  } = usePerformanceProfile();
 
-  useEffect(() => {
-    const video = videoRef.current;
-    const container = videoContainerRef.current;
-    if (!video || !container || !previewVideo) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          startVideoPlayback(video);
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.15, rootMargin: "80px" },
-    );
-
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, [previewVideo]);
-
-  if (previewMute && previewVideo) {
-    return (
-      <div
-        ref={videoContainerRef}
-        className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-black ${className}`}
-      >
-        <video
-          ref={videoRef}
-          poster={previewPoster}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 h-full w-full object-cover object-top"
-          onLoadedData={(e) => startVideoPlayback(e.currentTarget)}
-          onCanPlay={(e) => startVideoPlayback(e.currentTarget)}
-          onError={(e) => {
-            const target = e.currentTarget;
-            target.style.display = "none";
-          }}
-        >
-          <source
-            src={previewVideo}
-            type={
-              previewVideo.endsWith(".mov")
-                ? "video/quicktime"
-                : "video/mp4"
-            }
-          />
-        </video>
-        {(previewPoster || previewImage) && (
-          <Image
-            src={previewPoster || previewImage!}
-            alt={`${title} website preview`}
-            fill
-            className="object-cover object-top"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        )}
-        <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
-      </div>
-    );
-  }
-
-  if (previewMute && (previewImage || previewPoster) && !livePreview) {
-    return (
-      <div
-        className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
-      >
-        <Image
-          src={previewImage || previewPoster!}
-          alt={`${title} website preview`}
-          fill
-          className="object-cover object-top"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
-      </div>
-    );
-  }
+  const staticSrc = previewImage || previewPoster;
+  const videoPreload = isMobile ? "none" : prefersLightEffects ? "metadata" : "auto";
 
   if (livePreview && liveUrl) {
-    const useStaticPreview =
-      !allowLivePreviews || (prefersLightEffects && (previewImage || previewPoster));
+    if (!allowLivePreviews && staticSrc) {
+      return (
+        <StaticPreview
+          title={title}
+          liveUrl={liveUrl}
+          isLight={isLight}
+          className={className}
+          src={staticSrc}
+        />
+      );
+    }
 
-    if (useStaticPreview && (previewImage || previewPoster)) {
+    if (allowLivePreviews) {
       return (
         <div
           className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
         >
-          <Image
-            src={previewImage || previewPoster!}
-            alt={`${title} website preview`}
-            fill
-            className="object-cover object-top"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          <LazyLiveIframe
+            previewKey={liveUrl}
+            src={buildEmbedUrl(liveUrl, previewMute)}
+            title={`${title} live preview`}
+            width={previewViewportWidth}
+            height={previewViewportHeight}
+            scale={previewScale}
+            previewMute={previewMute}
+            fallbackSrc={staticSrc}
           />
           <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
         </div>
       );
     }
-
-    return (
-      <div
-        className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
-      >
-        <LazyLiveIframe
-          previewKey={liveUrl}
-          src={buildEmbedUrl(liveUrl, previewMute)}
-          title={`${title} live preview`}
-          width={previewViewportWidth}
-          height={previewViewportHeight}
-          scale={previewScale}
-          previewMute={previewMute}
-        />
-        <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
-      </div>
-    );
   }
 
   if (previewVideo) {
     return (
-      <div
-        ref={videoContainerRef}
-        className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-black ${className}`}
-      >
-        <video
-          ref={videoRef}
-          poster={previewPoster}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 h-full w-full object-cover object-top"
-          onLoadedData={(e) => startVideoPlayback(e.currentTarget)}
-          onCanPlay={(e) => startVideoPlayback(e.currentTarget)}
-        >
-          <source
-            src={previewVideo}
-            type={
-              previewVideo.endsWith(".mov")
-                ? "video/quicktime"
-                : "video/mp4"
-            }
-          />
-        </video>
-        <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
-      </div>
+      <VideoPreview
+        title={title}
+        liveUrl={liveUrl}
+        isLight={isLight}
+        className={className}
+        previewVideo={previewVideo}
+        previewPoster={previewPoster}
+        allowPlayback={allowPreviewVideos}
+        preload={videoPreload}
+      />
     );
   }
 
-  if (previewImage) {
+  if (staticSrc) {
     return (
-      <div
-        className={`relative aspect-[16/10] overflow-hidden rounded-t-xl bg-zinc-900 ${className}`}
-      >
-        <Image
-          src={previewImage}
-          alt={`${title} website preview`}
-          fill
-          className="pointer-events-none object-cover object-top"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          draggable={false}
-        />
-        <BrowserChrome title={title} liveUrl={liveUrl} isLight={isLight} />
-      </div>
+      <StaticPreview
+        title={title}
+        liveUrl={liveUrl}
+        isLight={isLight}
+        className={className}
+        src={staticSrc}
+      />
     );
   }
 
@@ -313,33 +325,35 @@ export default function ProjectScreenshot({
         </div>
       </div>
 
-      <div className="absolute inset-x-6 top-16 bottom-6 flex flex-col gap-3">
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className={`h-8 w-3/4 rounded backdrop-blur-sm ${blockClass}`}
-        />
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className={`h-4 w-1/2 rounded backdrop-blur-sm ${blockClassMuted}`}
-        />
-        <div className="mt-2 grid flex-1 grid-cols-3 gap-2">
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 + i * 0.05 }}
-              className={`rounded-lg backdrop-blur-sm ${blockClassSoft}`}
-            />
-          ))}
+      {effectsEnabled && (
+        <div className="absolute inset-x-6 top-16 bottom-6 flex flex-col gap-3">
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className={`h-8 w-3/4 rounded backdrop-blur-sm ${blockClass}`}
+          />
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className={`h-4 w-1/2 rounded backdrop-blur-sm ${blockClassMuted}`}
+          />
+          <div className="mt-2 grid flex-1 grid-cols-3 gap-2">
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15 + i * 0.05 }}
+                className={`rounded-lg backdrop-blur-sm ${blockClassSoft}`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

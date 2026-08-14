@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
   reportLivePreviewVisibility,
@@ -16,6 +17,7 @@ interface LazyLiveIframeProps {
   height: number;
   scale: number;
   previewMute: boolean;
+  fallbackSrc?: string;
 }
 
 export default function LazyLiveIframe({
@@ -26,6 +28,7 @@ export default function LazyLiveIframe({
   height,
   scale,
   previewMute,
+  fallbackSrc,
 }: LazyLiveIframeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -50,10 +53,10 @@ export default function LazyLiveIframe({
     const observer = new IntersectionObserver(
       ([entry]) => {
         const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
-        setIsVisible(entry.isIntersecting && ratio >= 0.15);
+        setIsVisible(entry.isIntersecting && ratio >= 0.2);
         reportLivePreviewVisibility(previewKey, ratio);
       },
-      { rootMargin: "0px", threshold: [0, 0.15, 0.35, 0.55, 0.75, 1] },
+      { rootMargin: "48px 0px", threshold: [0, 0.2, 0.45, 0.7, 1] },
     );
 
     observer.observe(node);
@@ -71,12 +74,24 @@ export default function LazyLiveIframe({
 
     const timer = window.setTimeout(() => {
       setShouldLoad(true);
-    }, 120);
+    }, 180);
 
     return () => window.clearTimeout(timer);
   }, [isVisible, isActive]);
 
   if (!allowLivePreviews) {
+    if (fallbackSrc) {
+      return (
+        <Image
+          src={fallbackSrc}
+          alt=""
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      );
+    }
+
     return <div className="absolute inset-0 top-[3.25rem] bg-[#0f0f12]" aria-hidden />;
   }
 
@@ -98,8 +113,15 @@ export default function LazyLiveIframe({
           style={{
             transform: `translate3d(-50%, 0, 0) scale(${scale})`,
             transformOrigin: "top center",
-            willChange: "transform",
           }}
+        />
+      ) : fallbackSrc ? (
+        <Image
+          src={fallbackSrc}
+          alt=""
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       ) : (
         <div className="absolute inset-0 bg-[#0f0f12]" aria-hidden />

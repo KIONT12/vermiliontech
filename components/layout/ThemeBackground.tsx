@@ -3,20 +3,27 @@
 import { usePathname } from "next/navigation";
 import LiveTypingBackground from "@/components/ui/LiveTypingBackground";
 import LiveLogoWatermark from "@/components/ui/LiveLogoWatermark";
+import { usePerformanceProfile } from "@/lib/hooks/usePerformanceProfile";
 
 export default function ThemeBackground() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const { allowBackgroundEffects, isDesktop } = usePerformanceProfile();
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden theme-bg">
+    <div
+      aria-hidden
+      className={`pointer-events-none fixed inset-0 z-0 overflow-hidden theme-bg${
+        allowBackgroundEffects ? "" : " theme-bg--light"
+      }`}
+    >
       <div className="absolute inset-0 grain-overlay" />
       <div className="absolute inset-0 grid-bg opacity-25" />
 
-      {!isHome && (
+      {!isHome && allowBackgroundEffects && (
         <>
           <LiveLogoWatermark />
-          <LiveTypingBackground />
+          {isDesktop && <LiveTypingBackground />}
         </>
       )}
 

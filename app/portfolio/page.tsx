@@ -12,10 +12,11 @@ export default function PortfolioPage() {
   return (
     <>
       <OpeningSection
+        compact
         label="Portfolio"
-        title="Our Portfolio"
-        highlight="Portfolio"
-        description="A showcase of websites we've built for businesses ready to stand out online."
+        title="Client Work"
+        highlight="Work"
+        description="Live websites and applications we've built for businesses across sports, music, retail, and services."
       />
       <ProjectGrid />
     </>

@@ -15,7 +15,7 @@ export default function ScrollReveal({
   className = "",
   delay = 0,
 }: ScrollRevealProps) {
-  const { effectsEnabled } = useMotionPreference();
+  const { effectsEnabled, isDesktop } = useMotionPreference();
 
   if (!effectsEnabled) {
     return <div className={className}>{children}</div>;
@@ -23,10 +23,10 @@ export default function ScrollReveal({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: isDesktop ? 24 : 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: isDesktop ? "-60px" : "-24px" }}
+      transition={{ duration: isDesktop ? 0.4 : 0.32, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}

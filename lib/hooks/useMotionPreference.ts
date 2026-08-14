@@ -1,48 +1,58 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  computePerformanceProfile,
+  subscribePerformanceProfile,
+  type PerformanceProfile,
+} from "@/lib/performanceProfile";
 
 interface MotionPreference {
   reducedMotion: boolean;
   isDesktop: boolean;
+  isMobile: boolean;
+  isTablet: boolean;
   showEffects: boolean;
   effectsEnabled: boolean;
 }
 
-const defaultPreference: MotionPreference = {
+function toMotionPreference(profile: PerformanceProfile): MotionPreference {
+  return {
+    reducedMotion: profile.reducedMotion,
+    isDesktop: profile.isDesktop,
+    isMobile: profile.isMobile,
+    isTablet: profile.isTablet,
+    showEffects: !profile.isMobile,
+    effectsEnabled: !profile.reducedMotion && !profile.isMobile,
+  };
+}
+
+const defaultPreference: MotionPreference = toMotionPreference({
   reducedMotion: false,
+  saveData: false,
+  slowConnection: false,
+  isMobile: true,
+  isTablet: false,
   isDesktop: false,
-  showEffects: true,
-  effectsEnabled: true,
-};
+  prefersLightEffects: true,
+  allowLivePreviews: false,
+  allowHeroVideo: false,
+  allowBackgroundEffects: false,
+  allowPreviewVideos: false,
+});
 
 export function useMotionPreference(): MotionPreference {
-  const [prefs, setPrefs] = useState<MotionPreference>(defaultPreference);
+  const [prefs, setPrefs] = useState<MotionPreference>(() => {
+    if (typeof window === "undefined") {
+      return defaultPreference;
+    }
+    return toMotionPreference(computePerformanceProfile());
+  });
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const tablet = window.matchMedia("(min-width: 768px)");
-    const desktop = window.matchMedia("(min-width: 1024px)");
-
-    const update = () => {
-      setPrefs({
-        reducedMotion: reduced.matches,
-        isDesktop: desktop.matches,
-        showEffects: tablet.matches,
-        effectsEnabled: !reduced.matches,
-      });
-    };
-
+    const update = () => setPrefs(toMotionPreference(computePerformanceProfile()));
     update();
-    reduced.addEventListener("change", update);
-    tablet.addEventListener("change", update);
-    desktop.addEventListener("change", update);
-
-    return () => {
-      reduced.removeEventListener("change", update);
-      tablet.removeEventListener("change", update);
-      desktop.removeEventListener("change", update);
-    };
+    return subscribePerformanceProfile(update);
   }, []);
 
   return prefs;

@@ -22,18 +22,16 @@ function playVideo(video: HTMLVideoElement) {
 export default function HomeVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { reducedMotion, saveData } = usePerformanceProfile();
-
-  const useStaticBackground = reducedMotion || saveData;
+  const { allowHeroVideo, isTablet } = usePerformanceProfile();
 
   const startPlayback = useCallback(() => {
     const video = videoRef.current;
-    if (!video || useStaticBackground) return;
+    if (!video || !allowHeroVideo) return;
     playVideo(video);
-  }, [useStaticBackground]);
+  }, [allowHeroVideo]);
 
   useEffect(() => {
-    if (useStaticBackground) return;
+    if (!allowHeroVideo) return;
 
     const video = videoRef.current;
     const container = containerRef.current;
@@ -54,21 +52,23 @@ export default function HomeVideoBackground() {
 
     observer.observe(container);
     return () => observer.disconnect();
-  }, [useStaticBackground, startPlayback]);
+  }, [allowHeroVideo, startPlayback]);
 
   return (
     <div
       ref={containerRef}
-      className={`home-video-bg ${useStaticBackground ? "home-video-bg--static" : ""}`}
+      className={`home-video-bg ${!allowHeroVideo ? "home-video-bg--static" : ""}${
+        isTablet ? " home-video-bg--tablet" : ""
+      }`}
     >
-      {!useStaticBackground && (
+      {allowHeroVideo && (
         <video
           ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           className="home-video-bg__media"
           src={VIDEO_SRC}
           onLoadedData={startPlayback}
