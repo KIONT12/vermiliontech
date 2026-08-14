@@ -111,10 +111,14 @@ export default function Navbar() {
             ? "border-b border-white/10 bg-[#0d1117] md:bg-transparent"
             : scrolled
               ? "border-b accent-border bg-[#0d1117]/90 shadow-lg shadow-black/20 backdrop-blur-lg"
-              : "bg-[#0d1117]/70 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none"
+              : "bg-[#0d1117]/80 backdrop-blur-md md:bg-[#0d1117]/55 md:backdrop-blur-sm"
         }`}
       >
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
+        <div
+          className="pointer-events-none absolute top-0 right-0 z-[1] h-full w-44 bg-gradient-to-l from-[#0d1117] via-[#0d1117]/90 to-transparent"
+          aria-hidden
+        />
+        <nav className="relative z-[2] mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
           <Link href="/" className="group flex items-center gap-3" onClick={closeMobile}>
             <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2 ring-red-500/30 transition-transform group-hover:scale-105">
               <Image

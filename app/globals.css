@@ -1129,13 +1129,45 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
+  background:
+    radial-gradient(
+      ellipse 90% 120% at 100% 0%,
+      rgba(4, 6, 10, 0.98) 0%,
+      rgba(4, 6, 10, 0.75) 35%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(4, 6, 10, 0.65) 0%,
+      rgba(4, 6, 10, 0.45) 40%,
+      rgba(4, 6, 10, 0.72) 88%,
+      rgba(4, 6, 10, 0.92) 100%
+    );
+  pointer-events: none;
+}
+
+.pro-hero-watermark-cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  width: min(280px, 42vw);
+  height: 7rem;
   background: linear-gradient(
-    180deg,
-    rgba(4, 6, 10, 0.35) 0%,
-    rgba(4, 6, 10, 0.55) 45%,
-    rgba(4, 6, 10, 0.92) 100%
+    225deg,
+    rgba(4, 6, 10, 1) 0%,
+    rgba(4, 6, 10, 0.95) 35%,
+    rgba(4, 6, 10, 0.7) 65%,
+    transparent 100%
   );
   pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .pro-hero-watermark-cover {
+    width: 260px;
+    height: 6rem;
+  }
 }
 
 .pro-label {
@@ -1974,9 +2006,10 @@ body {
   height: 100%;
   width: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: 38% top;
   filter: brightness(1.15) saturate(1.1);
-  transform: translateZ(0);
+  transform: scale(1.14) translateZ(0);
+  transform-origin: 40% top;
 }
 
 .home-video-bg__overlay {
@@ -1997,15 +2030,14 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 2;
-  width: min(420px, 55vw);
-  height: min(120px, 18vh);
-  background: radial-gradient(
-    ellipse 115% 130% at 100% 0%,
-    rgba(4, 6, 10, 0.97) 0%,
-    rgba(4, 6, 10, 0.72) 42%,
-    rgba(4, 6, 10, 0.2) 68%,
-    transparent 82%
+  z-index: 3;
+  width: min(280px, 45vw);
+  height: 6rem;
+  background: linear-gradient(
+    225deg,
+    rgba(4, 6, 10, 0.98) 0%,
+    rgba(4, 6, 10, 0.8) 50%,
+    transparent 85%
   );
   pointer-events: none;
 }
