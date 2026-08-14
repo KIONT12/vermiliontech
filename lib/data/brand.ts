@@ -4,18 +4,20 @@ export const brand = {
     primary: "VERMILION",
     secondary: "TECH",
   },
-  tagline: "We build websites that turn visitors into customers.",
+  tagline: "Custom apps, websites, and software — built to turn attention into action.",
   description:
-    "VermilionTech crafts fast, modern web experiences — from business sites to custom digital products.",
+    "VermilionTech designs and builds custom apps, websites, and software with creative polish and business-focused results.",
   email: "foodlandrock@gmail.com",
   founder: "Kiont Jones",
   github: "https://github.com/KIONT12/vermiliontech",
 };
 
 export const heroContent = {
-  badge: "Web development studio",
-  title: "We Build Websites That Turn Visitors Into Customers",
-  highlight: "Turn Visitors Into Customers",
+  badge: "Apps · Websites · Custom Software",
+  title: "Digital Products Crafted to Win Customers",
+  highlight: "Win Customers",
   description:
-    "Custom websites for businesses that need to look credible, load fast, and convert — built with Next.js and modern best practices.",
+    "I build apps, websites, and software that feel unmistakably yours — fast, polished, and designed to earn trust the moment someone lands on your page.",
 };
+
+export const heroTags = ["Web Apps", "Business Sites", "Custom Software", "Creative UX"];

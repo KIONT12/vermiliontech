@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: `${brand.name} | Modern Web Development Studio`,
+    default: `${brand.name} | Custom Apps, Websites & Software`,
     template: `%s | ${brand.name}`,
   },
   description: brand.description,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: brand.founder, url: `mailto:${brand.email}` }],
   openGraph: {
-    title: `${brand.name} | Modern Web Development Studio`,
+    title: `${brand.name} | Custom Apps, Websites & Software`,
     description: brand.description,
     type: "website",
     locale: "en_US",

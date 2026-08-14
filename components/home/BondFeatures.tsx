@@ -4,47 +4,53 @@ import { getIcon } from "@/components/ui/Icons";
 
 const highlights = [
   {
-    title: "Conversion Focus",
-    description: "Messaging and CTAs engineered to turn traffic into leads.",
-    icon: "sparkles",
+    title: "Fully Custom",
+    description:
+      "No templates or copy-paste layouts — every build is shaped around your brand and goals.",
+    icon: "palette",
   },
   {
-    title: "Performance",
-    description: "Next.js builds tuned for speed, SEO, and Core Web Vitals.",
+    title: "Apps & Software",
+    description:
+      "Web apps, dashboards, and custom tools engineered to work smoothly on every device.",
     icon: "rocket",
   },
   {
-    title: "Mobile First",
-    description: "Layouts that stay sharp on every screen size.",
-    icon: "device",
+    title: "Sites That Convert",
+    description:
+      "Clear messaging, strong CTAs, and fast load times that turn visitors into leads and sales.",
+    icon: "sparkles",
   },
   {
-    title: "Premium Design",
-    description: "Bold visuals that make your brand feel high-end.",
-    icon: "palette",
+    title: "Creative Edge",
+    description:
+      "Bold design and thoughtful UX so your business never looks like everyone else online.",
+    icon: "device",
   },
 ];
 
 export default function BondFeatures() {
   return (
-    <div className="tech-section">
-      <div className="tech-section-head">
-        <span className="tech-kicker">System capabilities</span>
-        <h2 className="tech-section-title">
-          Built <span className="tech-fire-text">fast</span>. Built to convert.
+    <div className="studio-section">
+      <div className="studio-section-head">
+        <span className="studio-kicker">What I build</span>
+        <h2 className="studio-section-title">
+          Creative tech with <span className="studio-accent-text">business impact</span>
         </h2>
+        <p className="studio-section-desc mt-3 max-w-2xl">
+          From polished business websites to fully custom software — built with care,
+          speed, and a focus on results that matter to you.
+        </p>
       </div>
 
-      <div className="tech-bento">
-        {highlights.map((item, i) => (
-          <article key={item.title} className="tech-bento-cell" data-index={`0${i + 1}`}>
-            <div className="tech-bento-icon text-red-400">
+      <div className="studio-feature-grid">
+        {highlights.map((item) => (
+          <article key={item.title} className="studio-feature-card">
+            <div className="studio-feature-icon text-red-400">
               {getIcon(item.icon, "h-5 w-5")}
             </div>
-            <h3 className="mt-4 text-sm font-semibold tracking-wide text-white">
-              {item.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-500">{item.description}</p>
+            <h3 className="mt-4 text-base font-semibold text-white">{item.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-400">{item.description}</p>
           </article>
         ))}
       </div>

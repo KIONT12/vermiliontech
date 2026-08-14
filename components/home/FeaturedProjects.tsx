@@ -58,13 +58,13 @@ export default function FeaturedProjects({
       <div className={`relative z-[1] ${unifiedTheme ? "" : "mx-auto max-w-7xl px-6 lg:px-8"}`}>
         {unifiedTheme ? (
           <div className="tech-section-head relative z-[1] mb-10">
-            <span className="tech-kicker">Live deployments</span>
+            <span className="tech-kicker">Selected work</span>
             <h2 className="tech-section-title">
-              Client sites <span className="tech-fire-text">in production</span>
+              Real projects, <span className="tech-fire-text">live online</span>
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-500">
-              New Force Basketball, WhiteAsh BKK, GSoundz, JD Mobile Detailing,
-              J. Parker Sports Agency — all live.
+              Sports brands, music studios, retail, and agencies — custom builds
+              that are running in production today.
             </p>
           </div>
         ) : cinemaTheme ? (
