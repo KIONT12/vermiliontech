@@ -43,9 +43,9 @@ export const projects: Project[] = [
     previewVariant: "dark",
     livePreview: true,
     previewMute: true,
-    previewScale: 0.45,
-    previewViewportWidth: 390,
-    previewViewportHeight: 900,
+    previewScale: 0.78,
+    previewViewportWidth: 1280,
+    previewViewportHeight: 720,
   },
   {
     id: "white-bkk-new-location",
