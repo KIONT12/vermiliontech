@@ -31,15 +31,16 @@ export default function FeaturedProjects({
     <section
       className={`relative overflow-hidden ${
         unifiedTheme
-          ? "unified-deck-section unified-projects-panel"
+          ? "tech-section tech-projects-panel"
           : `py-24 lg:py-32 ${
               cinemaTheme ? "cinema-section" : bondTheme ? "bond-section" : flyerTheme ? "flyer-section" : ""
             }`
       }`}
     >
         {unifiedTheme ? (
-          <div className="unified-projects-bg" aria-hidden>
-            <div className="unified-projects-mesh" />
+          <div className="tech-projects-bg" aria-hidden>
+            <div className="tech-projects-glow" />
+            <div className="tech-grid-lines" />
           </div>
         ) : (
         <div
@@ -56,12 +57,14 @@ export default function FeaturedProjects({
       )}
       <div className={`relative z-[1] ${unifiedTheme ? "" : "mx-auto max-w-7xl px-6 lg:px-8"}`}>
         {unifiedTheme ? (
-          <div className="unified-section-head relative z-[1] mb-10">
-            <p className="unified-label">Portfolio</p>
-            <h2 className="unified-section-title">Selected client work</h2>
+          <div className="tech-section-head relative z-[1] mb-10">
+            <span className="tech-kicker">Live deployments</span>
+            <h2 className="tech-section-title">
+              Client sites <span className="tech-fire-text">in production</span>
+            </h2>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-500">
-              Production websites for retail, music, automotive, and sports —
-              each built for real business outcomes.
+              New Force Basketball, WhiteAsh BKK, GSoundz, JD Mobile Detailing,
+              J. Parker Sports Agency — all live.
             </p>
           </div>
         ) : cinemaTheme ? (
@@ -119,7 +122,7 @@ export default function FeaturedProjects({
           />
         )}
 
-        <div className={unifiedTheme ? "unified-project-stack" : "space-y-8"}>
+        <div className={unifiedTheme ? "tech-project-grid" : "space-y-8"}>
           {spotlightProjects.map((project, i) => (
             <ScrollReveal key={project.id} delay={i * 0.05}>
               <SpotlightProjectCard
@@ -142,7 +145,7 @@ export default function FeaturedProjects({
                 <article
                   className={`group overflow-hidden card-hover ${
                     unifiedTheme
-                      ? "unified-project-card"
+                      ? "tech-mini-card overflow-hidden"
                       : cinemaTheme
                         ? "cinema-glass cinema-card overflow-hidden rounded-2xl"
                         : flyerTheme
@@ -194,9 +197,9 @@ export default function FeaturedProjects({
           </div>
         )}
 
-        <ScrollReveal className={unifiedTheme ? "unified-deck-footer mt-8" : "mt-12 text-center"}>
+        <ScrollReveal className={unifiedTheme ? "tech-deck-footer mt-10" : "mt-12 text-center"}>
           {unifiedTheme || cinemaTheme ? (
-            <Link href="/portfolio" className="unified-btn-primary">
+            <Link href="/portfolio" className="tech-btn-primary">
               View Full Portfolio
             </Link>
           ) : bondTheme ? (

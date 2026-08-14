@@ -4,12 +4,13 @@ import FeaturedProjects from "@/components/home/FeaturedProjects";
 
 export default function HomeMain() {
   return (
-    <div className="home-unified relative">
+    <div className="home-tech-fire relative">
       <BondHero />
-      <div className="unified-deck-wrap relative z-10 px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="unified-deck mx-auto max-w-6xl">
+      <div className="tech-flow-wrap relative z-10 px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="tech-deck mx-auto max-w-6xl">
+          <div className="tech-deck-glow" aria-hidden />
           <BondFeatures />
-          <div className="unified-deck-divider" />
+          <div className="tech-deck-divider" />
           <FeaturedProjects unifiedTheme />
         </div>
       </div>

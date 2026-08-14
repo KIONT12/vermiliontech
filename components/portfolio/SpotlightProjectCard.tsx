@@ -27,7 +27,7 @@ export default function SpotlightProjectCard({
   flyerIndex,
 }: SpotlightProjectCardProps) {
   const cardClass = unifiedStyle
-    ? "unified-project-card overflow-hidden"
+    ? "tech-project-card overflow-hidden"
     : cinemaStyle
       ? "cinema-glass cinema-card overflow-hidden rounded-2xl"
       : flyerStyle
@@ -38,10 +38,17 @@ export default function SpotlightProjectCard({
 
   return (
     <motion.article
-      whileHover={unifiedStyle ? { y: 0 } : { y: -6 }}
+      whileHover={unifiedStyle ? { y: -4 } : { y: -6 }}
       transition={{ duration: 0.3 }}
       className={`group card-hover lg:grid lg:grid-cols-2 ${cardClass}`}
     >
+      {unifiedStyle && (
+        <>
+          <span className="tech-corner tech-corner--tl scale-75" aria-hidden />
+          <span className="tech-corner tech-corner--tr scale-75" aria-hidden />
+        </>
+      )}
+
       {bondStyle && !cinemaStyle && !unifiedStyle && (
         <>
           <span className="bond-hud-corner bond-hud-corner--tl scale-75" />
@@ -156,7 +163,7 @@ export default function SpotlightProjectCard({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${unifiedStyle ? "unified-btn-primary" : "cinema-btn-primary"} text-sm`}
+                className={`${unifiedStyle ? "tech-btn-primary" : "cinema-btn-primary"} text-sm`}
               >
                 Visit Live Site
                 <ExternalLinkIcon />
@@ -164,7 +171,7 @@ export default function SpotlightProjectCard({
               {showPortfolioLink && (
                 <Link
                   href="/portfolio"
-                  className={`${unifiedStyle ? "unified-btn-secondary" : "cinema-btn-secondary"} text-sm`}
+                  className={`${unifiedStyle ? "tech-btn-ghost" : "cinema-btn-secondary"} text-sm`}
                 >
                   View All Work
                 </Link>

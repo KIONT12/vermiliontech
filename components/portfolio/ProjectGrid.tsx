@@ -31,7 +31,7 @@ export default function ProjectGrid() {
         <SectionHeading
           label="Portfolio"
           title="Project Showcase"
-          description="Explore websites I've built for businesses across different industries."
+          description="Live client websites — including New Force Basketball, WhiteAsh BKK, GSoundz, JD Mobile Detailing, and J. Parker Sports Agency."
         />
 
         <ScrollReveal>
