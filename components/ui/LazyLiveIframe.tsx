@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
+  refreshLivePreviewActive,
   reportLivePreviewVisibility,
   subscribeLivePreview,
   unregisterLivePreview,
@@ -32,13 +33,10 @@ export default function LazyLiveIframe({
   fallbackSrc,
 }: LazyLiveIframeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
   const { allowLivePreviews, isMobile, isTablet } = usePerformanceProfile();
   const effectiveScale = livePreviewScale(scale, { isMobile, isTablet });
-  const visibilityThreshold = isMobile ? 0.12 : 0.2;
-  const loadDelay = isMobile ? 80 : 180;
 
   useEffect(() => {
     if (!allowLivePreviews) return;
@@ -57,34 +55,44 @@ export default function LazyLiveIframe({
     const observer = new IntersectionObserver(
       ([entry]) => {
         const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
-        setIsVisible(entry.isIntersecting && ratio >= visibilityThreshold);
         reportLivePreviewVisibility(previewKey, ratio);
       },
       {
-        rootMargin: isMobile ? "80px 0px" : "48px 0px",
-        threshold: [0, visibilityThreshold, 0.45, 0.7, 1],
+        rootMargin: "120px 0px",
+        threshold: [0, 0.08, 0.15, 0.3, 0.5, 0.75, 1],
       },
     );
 
     observer.observe(node);
+
+    const measure = () => {
+      const rect = node.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const visibleHeight =
+        Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+      const ratio = rect.height > 0 ? Math.max(0, visibleHeight / rect.height) : 0;
+      reportLivePreviewVisibility(previewKey, ratio);
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    refreshLivePreviewActive();
+
     return () => {
       observer.disconnect();
+      window.removeEventListener("resize", measure);
       unregisterLivePreview(previewKey);
     };
-  }, [allowLivePreviews, previewKey, visibilityThreshold, isMobile]);
+  }, [allowLivePreviews, previewKey]);
 
   useEffect(() => {
-    if (!isVisible || !isActive) {
+    if (!allowLivePreviews || !isActive) {
       setShouldLoad(false);
       return;
     }
 
-    const timer = window.setTimeout(() => {
-      setShouldLoad(true);
-    }, loadDelay);
-
-    return () => window.clearTimeout(timer);
-  }, [isVisible, isActive, loadDelay]);
+    setShouldLoad(true);
+  }, [allowLivePreviews, isActive]);
 
   if (!allowLivePreviews) {
     if (fallbackSrc) {
@@ -112,7 +120,6 @@ export default function LazyLiveIframe({
         <iframe
           src={src}
           title={title}
-          loading="lazy"
           width={width}
           height={height}
           allow={previewMute ? "autoplay 'none'; microphone 'none'" : undefined}

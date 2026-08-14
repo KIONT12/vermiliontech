@@ -7,17 +7,22 @@ const listeners = new Set<Listener>();
 
 let activeKey: string | null = null;
 
-const MIN_RATIO = 0.25;
+/** Minimum visibility before a preview can become active. Kept low for mobile cards. */
+const MIN_RATIO = 0.08;
 
 function pickActiveKey() {
   let bestKey: string | null = null;
   let bestRatio = 0;
 
   for (const [key, ratio] of visibility) {
-    if (ratio >= MIN_RATIO && ratio > bestRatio) {
+    if (ratio > bestRatio) {
       bestRatio = ratio;
       bestKey = key;
     }
+  }
+
+  if (!bestKey || bestRatio < MIN_RATIO) {
+    return null;
   }
 
   return bestKey;
@@ -50,4 +55,8 @@ export function subscribeLivePreview(listener: Listener) {
   return () => {
     listeners.delete(listener);
   };
+}
+
+export function refreshLivePreviewActive() {
+  notify();
 }

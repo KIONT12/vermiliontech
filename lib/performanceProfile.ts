@@ -41,8 +41,7 @@ function readConnection() {
   const saveData = Boolean(connection?.saveData);
   const slowConnection =
     connection?.effectiveType === "slow-2g" ||
-    connection?.effectiveType === "2g" ||
-    connection?.effectiveType === "3g";
+    connection?.effectiveType === "2g";
 
   return { connection, saveData, slowConnection };
 }
@@ -60,7 +59,7 @@ export function computePerformanceProfile(): PerformanceProfile {
 
   const prefersLightEffects = reducedMotion || saveData || slowConnection;
 
-  const allowHeavyMedia = !reducedMotion && !saveData && !slowConnection;
+  const allowMedia = !reducedMotion && !saveData;
 
   return {
     reducedMotion,
@@ -70,10 +69,10 @@ export function computePerformanceProfile(): PerformanceProfile {
     isTablet,
     isDesktop,
     prefersLightEffects,
-    allowLivePreviews: allowHeavyMedia,
-    allowHeroVideo: allowHeavyMedia,
+    allowLivePreviews: allowMedia,
+    allowHeroVideo: allowMedia,
     allowBackgroundEffects: !isMobile && !reducedMotion,
-    allowPreviewVideos: allowHeavyMedia,
+    allowPreviewVideos: allowMedia,
   };
 }
 

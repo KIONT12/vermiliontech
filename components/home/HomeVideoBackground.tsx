@@ -6,17 +6,9 @@ import { usePerformanceProfile } from "@/lib/hooks/usePerformanceProfile";
 const VIDEO_SRC = "/backgrounds/live-bg.mp4";
 
 function playVideo(video: HTMLVideoElement) {
-  const start = () => {
+  if (video.paused) {
     video.play().catch(() => {});
-  };
-
-  if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-    start();
-    return;
   }
-
-  video.addEventListener("loadeddata", start, { once: true });
-  video.addEventListener("canplay", start, { once: true });
 }
 
 export default function HomeVideoBackground() {
@@ -37,11 +29,6 @@ export default function HomeVideoBackground() {
     const container = containerRef.current;
     if (!video || !container) return;
 
-    if (!video.getAttribute("src")) {
-      video.src = VIDEO_SRC;
-      video.load();
-    }
-
     startPlayback();
 
     const observer = new IntersectionObserver(
@@ -52,11 +39,23 @@ export default function HomeVideoBackground() {
           video.pause();
         }
       },
-      { threshold: 0.05, rootMargin: "100px 0px" },
+      { threshold: 0.01, rootMargin: "100px 0px" },
     );
 
     observer.observe(container);
-    return () => observer.disconnect();
+
+    const onVisibility = () => {
+      if (!document.hidden) {
+        startPlayback();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [allowHeroVideo, startPlayback]);
 
   return (
@@ -73,7 +72,7 @@ export default function HomeVideoBackground() {
           loop
           muted
           playsInline
-          preload={isMobile ? "metadata" : "auto"}
+          preload="auto"
           className="home-video-bg__media"
           src={VIDEO_SRC}
           onLoadedData={startPlayback}
