@@ -98,9 +98,6 @@ export default function Footer() {
           <p className="text-sm text-zinc-500">
             &copy; {new Date().getFullYear()} {brand.name}. All rights reserved.
           </p>
-          <p className="text-sm text-zinc-500">
-            Built with Next.js, React & Tailwind CSS
-          </p>
         </div>
       </div>
     </footer>

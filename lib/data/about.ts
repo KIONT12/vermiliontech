@@ -65,7 +65,7 @@ export const milestones = [
     year: "2022",
     title: "Development training",
     description:
-      "Committed to modern web development with React, Next.js, and TypeScript.",
+      "Committed to building modern websites and digital products for real businesses.",
   },
   {
     year: "2023–24",

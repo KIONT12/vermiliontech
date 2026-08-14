@@ -9,11 +9,13 @@ import { useMotionPreference } from "@/lib/hooks/useMotionPreference";
 interface PortfolioProjectCardProps {
   project: Project;
   reverse?: boolean;
+  staticPreviewOnly?: boolean;
 }
 
 export default function PortfolioProjectCard({
   project,
   reverse = false,
+  staticPreviewOnly = false,
 }: PortfolioProjectCardProps) {
   const { effectsEnabled, isDesktop } = useMotionPreference();
 
@@ -31,7 +33,7 @@ export default function PortfolioProjectCard({
           previewImage={project.previewImage}
           previewVideo={project.previewVideo}
           previewPoster={project.previewPoster}
-          livePreview={project.livePreview}
+          livePreview={staticPreviewOnly ? false : project.livePreview}
           previewMute={project.previewMute}
           previewScale={project.previewScale}
           previewViewportWidth={project.previewViewportWidth}

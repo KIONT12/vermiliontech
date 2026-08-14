@@ -89,6 +89,18 @@ h4 {
     radial-gradient(ellipse 50% 30% at 0% 80%, rgba(227, 66, 52, 0.06), transparent);
 }
 
+.theme-bg--minimal {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 70% 45% at 50% -10%, rgba(227, 66, 52, 0.08), transparent),
+    radial-gradient(ellipse 50% 35% at 100% 100%, rgba(18, 24, 42, 0.5), transparent);
+}
+
+.theme-bg--minimal .grain-overlay,
+.theme-bg--minimal .theme-bg-glow {
+  display: none;
+}
+
 .grid-bg {
   background-image:
     linear-gradient(rgba(227, 66, 52, 0.04) 1px, transparent 1px),
@@ -1217,13 +1229,13 @@ h4 {
   top: 0;
   right: 0;
   z-index: 5;
-  width: min(280px, 42vw);
-  height: 7rem;
+  width: min(360px, 46vw);
+  height: 8.5rem;
   background: linear-gradient(
     225deg,
     rgba(4, 6, 10, 1) 0%,
-    rgba(4, 6, 10, 0.95) 35%,
-    rgba(4, 6, 10, 0.7) 65%,
+    rgba(4, 6, 10, 0.98) 30%,
+    rgba(4, 6, 10, 0.85) 55%,
     transparent 100%
   );
   pointer-events: none;
@@ -1231,8 +1243,8 @@ h4 {
 
 @media (min-width: 768px) {
   .pro-hero-watermark-cover {
-    width: 260px;
-    height: 6rem;
+    width: 340px;
+    height: 7.5rem;
   }
 }
 
@@ -2617,11 +2629,6 @@ h4 {
     transform: none;
     filter: brightness(1.06) saturate(1.03);
   }
-
-  .home-video-bg__header-mask {
-    width: min(220px, 52vw);
-    height: 5rem;
-  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -2651,31 +2658,48 @@ h4 {
   top: 0;
   right: 0;
   z-index: 3;
-  width: min(280px, 45vw);
-  height: 6rem;
+  width: min(360px, 46vw);
+  height: 8.5rem;
   background: linear-gradient(
     225deg,
-    rgba(4, 6, 10, 0.98) 0%,
-    rgba(4, 6, 10, 0.8) 50%,
-    transparent 85%
+    rgba(4, 6, 10, 0.99) 0%,
+    rgba(4, 6, 10, 0.92) 45%,
+    rgba(4, 6, 10, 0.55) 70%,
+    transparent 100%
   );
   pointer-events: none;
 }
 
-.home-video-bg__watermark-mask {
+.home-video-bg__pollo-cover {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
-  z-index: 2;
-  width: 72px;
-  height: 72px;
-  background: radial-gradient(
-    circle at 100% 100%,
-    rgba(4, 6, 10, 0.92) 0%,
-    rgba(4, 6, 10, 0.45) 55%,
-    transparent 75%
+  z-index: 4;
+  width: min(300px, 36vw);
+  height: min(96px, 12vh);
+  background: linear-gradient(
+    225deg,
+    rgba(4, 6, 10, 1) 0%,
+    rgba(4, 6, 10, 0.96) 50%,
+    transparent 100%
   );
   pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .home-video-bg__header-mask {
+    width: min(280px, 54vw);
+    height: 6.5rem;
+  }
+
+  .home-video-bg__pollo-cover {
+    width: min(260px, 48vw);
+    height: min(80px, 11vh);
+  }
+}
+
+.home-video-bg__watermark-mask {
+  display: none;
 }
 
 /* ── Home: live logo backdrop ── */

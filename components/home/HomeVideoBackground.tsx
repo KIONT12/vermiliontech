@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePerformanceProfile } from "@/lib/hooks/usePerformanceProfile";
 
 const VIDEO_SRC = "/backgrounds/live-bg.mp4";
@@ -22,29 +22,27 @@ function playVideo(video: HTMLVideoElement) {
 export default function HomeVideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const { allowHeroVideo, isTablet } = usePerformanceProfile();
 
   const startPlayback = useCallback(() => {
     const video = videoRef.current;
-    if (!video || !allowHeroVideo) return;
+    if (!video || !allowHeroVideo || !shouldLoadVideo) return;
     playVideo(video);
-  }, [allowHeroVideo]);
+  }, [allowHeroVideo, shouldLoadVideo]);
 
   useEffect(() => {
     if (!allowHeroVideo) return;
 
-    const video = videoRef.current;
     const container = containerRef.current;
-    if (!video || !container) return;
-
-    startPlayback();
+    if (!container) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          startPlayback();
+          setShouldLoadVideo(true);
         } else {
-          video.pause();
+          videoRef.current?.pause();
         }
       },
       { threshold: 0.05, rootMargin: "100px 0px" },
@@ -52,7 +50,21 @@ export default function HomeVideoBackground() {
 
     observer.observe(container);
     return () => observer.disconnect();
-  }, [allowHeroVideo, startPlayback]);
+  }, [allowHeroVideo]);
+
+  useEffect(() => {
+    if (!allowHeroVideo || !shouldLoadVideo) return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!video.getAttribute("src")) {
+      video.src = VIDEO_SRC;
+      video.load();
+    }
+
+    startPlayback();
+  }, [allowHeroVideo, shouldLoadVideo, startPlayback]);
 
   return (
     <div
@@ -61,23 +73,22 @@ export default function HomeVideoBackground() {
         isTablet ? " home-video-bg--tablet" : ""
       }`}
     >
-      {allowHeroVideo && (
+      {allowHeroVideo && shouldLoadVideo && (
         <video
           ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           className="home-video-bg__media"
-          src={VIDEO_SRC}
           onLoadedData={startPlayback}
           onCanPlay={startPlayback}
         />
       )}
       <div className="home-video-bg__overlay" aria-hidden />
       <div className="home-video-bg__header-mask" aria-hidden />
-      <div className="home-video-bg__watermark-mask" aria-hidden />
+      <div className="home-video-bg__pollo-cover" aria-hidden />
     </div>
   );
 }

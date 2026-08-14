@@ -69,11 +69,12 @@ export default function ProjectGrid() {
           className="portfolio-project-list"
         >
           {filtered.map((project, i) => (
-            <ScrollReveal key={project.id} delay={effectsEnabled ? i * 0.05 : 0}>
+            <ScrollReveal key={project.id} delay={effectsEnabled ? i * 0.03 : 0}>
               <div id={project.id}>
                 <PortfolioProjectCard
                   project={project}
                   reverse={i % 2 === 1}
+                  staticPreviewOnly
                 />
               </div>
             </ScrollReveal>

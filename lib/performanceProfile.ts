@@ -67,7 +67,7 @@ export function computePerformanceProfile(): PerformanceProfile {
     isTablet,
     isDesktop,
     prefersLightEffects,
-    allowLivePreviews: isDesktop && allowHeavyMedia,
+    allowLivePreviews: false,
     allowHeroVideo: isDesktop && allowHeavyMedia,
     allowBackgroundEffects: !isMobile && !reducedMotion,
     allowPreviewVideos: (isDesktop || isTablet) && allowHeavyMedia,

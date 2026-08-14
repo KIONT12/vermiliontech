@@ -43,11 +43,12 @@ export default function FeaturedProjects({
 
           <div className="pro-project-list mt-12">
             {spotlightProjects.map((project, i) => (
-              <ScrollReveal key={project.id} delay={i * 0.04}>
+              <ScrollReveal key={project.id} delay={i * 0.02}>
                 <SpotlightProjectCard
                   project={project}
                   showPortfolioLink={i === spotlightProjects.length - 1}
                   proStyle
+                  staticPreviewOnly
                 />
               </ScrollReveal>
             ))}

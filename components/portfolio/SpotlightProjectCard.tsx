@@ -21,6 +21,8 @@ interface SpotlightProjectCardProps {
   reverse?: boolean;
   /** 1-based index shown on pro portfolio cards. */
   projectIndex?: number;
+  /** Force static image/video previews — no live iframes (faster scrolling). */
+  staticPreviewOnly?: boolean;
 }
 
 export default function SpotlightProjectCard({
@@ -34,6 +36,7 @@ export default function SpotlightProjectCard({
   flyerIndex,
   reverse = false,
   projectIndex,
+  staticPreviewOnly = false,
 }: SpotlightProjectCardProps) {
   const cardClass = proStyle
     ? "pro-project-card overflow-hidden"
@@ -107,7 +110,7 @@ export default function SpotlightProjectCard({
           previewImage={project.previewImage}
           previewVideo={project.previewVideo}
           previewPoster={project.previewPoster}
-          livePreview={project.livePreview}
+          livePreview={staticPreviewOnly ? false : project.livePreview}
           previewMute={project.previewMute}
           previewScale={project.previewScale}
           previewViewportWidth={project.previewViewportWidth}
@@ -178,14 +181,13 @@ export default function SpotlightProjectCard({
             </span>
           </div>
         )}
+        {!proStyle && (
         <div className="mt-5 flex flex-wrap gap-2">
           {project.technologies.slice(0, 4).map((tech) => (
             <span
               key={tech}
               className={`px-2.5 py-1 text-xs text-zinc-300 ${
-                proStyle
-                  ? "rounded bg-zinc-800/80 text-zinc-400"
-                  : unifiedStyle || cinemaStyle
+                unifiedStyle || cinemaStyle
                   ? "rounded-full bg-white/5 text-zinc-400"
                   : flyerStyle
                     ? "border border-red-500/25 bg-red-500/5 font-semibold uppercase tracking-wide"
@@ -198,6 +200,7 @@ export default function SpotlightProjectCard({
             </span>
           ))}
         </div>
+        )}
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           {proStyle ? (
             <>
