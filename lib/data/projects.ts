@@ -78,7 +78,9 @@ export const projects: Project[] = [
     previewVariant: "dark",
     livePreview: true,
     previewMute: true,
-    previewImage: "/projects/gsoundz-home.png",
+    previewScale: 0.78,
+    previewViewportWidth: 1280,
+    previewViewportHeight: 720,
   },
   {
     id: "jd-mobile-detailing",
